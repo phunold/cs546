@@ -1,19 +1,19 @@
+# TO - DO
+- do we need to define or set any document validation/restrictions for example "balance" not <= 0 or side has to be set to 'over' or 'under'.
+- there a missing relation between wager and grandsalami collection, not sure how this is done
+- etc.
+
 # Database Proposal
-
-
-## assumptions
-- user must belong to at least one league
-- user may belong to more than one league
-- users automatically included in global leaderboard (nothing needs to be done by user to enroll in global contests)
-- global leader determined for predefined date ranges (monthly, annually, end of a sport season, etc)
-- league and global leaderboards updated daily based on account balance
-- leagues will be formed with 10 users max
-
 
 ## collections
 
+- users automatically included in global leaderboard (nothing needs to be done by user to enroll in global contests)
+- global leader determined for predefined date ranges (monthly, annually, end of a sport season, etc)
+- league and global leaderboards updated daily based on account balance
+
 ### Users
-Stores user information 
+Stores user information. Users must belong to at least one league, but may belong to more than one league.
+
 ```json
 {
   "_id": "7b7997a2-c0d2-4f8c-b27a-6a1d4b5b6310",
@@ -35,6 +35,7 @@ Stores user information
 | email | string      |    users email address used for signup and login |
 | passwd | string      |    encrypted password |
 | balance | float      |    available balance in tokens/points |
+| league_ids | string  | list of league the user belongs to|
 
 
 ### Wagers
@@ -64,21 +65,24 @@ Stores bet information
 "_id": "12fb60ab534685609efefc4b7f2",
 "day": ISODate("2016-07-12"),
 "grandsalami": 42,
-"final": 49,
+"finalscore": 49,
 "over_under": "over"
+"status": 'final'
 }
 ```
 
 | Name        | Type         | Description  |
 | ------------- |-------------| -----|
 | _id      | string | UUID |
-| day | date      | date for this Grand salami |
-| grandsalami     | float | daily grand salami score |
-| effectiveTotal | integer |final daily ending total for sport in focus |
+| day | date     | date for this Grand salami |
+| grandsalami    | float | daily grand salami score |
+| finalscore | integer |final daily ending total for sport in focus |
 | over_under | string | calculated result 'over' or 'under' or ***p for par*** |
+| status  | string | status of the grandsalami 'new', 'open' open for bets, 'closed' closed for bets, 'final' results are final|
 
 ### leagues
-Stores the league the users belong to
+Stores the league the users belong to. Leagues will be formed with max of 10 users.
+
 ```json
 {
 	"_id": "4d3ed089fb60ab534684b7f2",
