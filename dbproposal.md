@@ -1,8 +1,3 @@
-# TO - DO
-- do we need to define or set any document validation/restrictions for example "balance" not <= 0 or side has to be set to 'over' or 'under'.
-- there a missing relation between wager and grandsalami collection, not sure how this is done
-- etc.
-
 # Database Proposal
 
 ## collections
