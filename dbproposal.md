@@ -46,7 +46,12 @@ Stores bet information
 	"_id": "7b7997a2-c0d2-4f8c-b27a-adf10",
 	"user_id": ObjectId("7b7997a2-c0d2-4f8c-b27a-6a1d4b5b6310"),
 	"timestamp": 1467831475,
-	"side": "over"
+	"side": "over",
+	"record":{
+		"win": 0,
+		"loss":0,
+		"draw":0
+	}
 }
 ```
 
@@ -56,6 +61,7 @@ Stores bet information
 | user_id | string      | reference to user to identify what user made the bet |
 | wager_time     | date | timestamp when bet was made |
 | side | string | 'over' or 'under' |
+| record | object | record of the user of their wagers
 
 
 ### grandsalami
