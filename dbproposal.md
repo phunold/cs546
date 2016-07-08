@@ -1,10 +1,5 @@
 # Database Proposal
 
-## collections
-
-- users automatically included in global leaderboard (nothing needs to be done by user to enroll in global contests)
-- global leader determined for predefined date ranges (monthly, annually, end of a sport season, etc)
-- league and global leaderboards updated daily based on account balance
 
 ### Users
 Stores user information. Users must belong to at least one league, but may belong to more than one league.
