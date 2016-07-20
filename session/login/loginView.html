@@ -1,0 +1,32 @@
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <form class="form-login" name="loginForm" ng-submit="loginActionEvent()" >
+                <h2>Please log in</h2>
+                <label for="inputEmail" >Email address</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" data-ng-model="formData.email" required>
+
+                <label for="inputPassword" >Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" data-ng-model="formData.password" required>
+                <div class="checkbox hidden">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <a class="small" ui-sref="welcome.register">
+                    New? Need access? Click here to register.
+                </a>
+                <button class="spacer btn-block" ng-disabled="loginForm.$invalid" ng-class="{'btn btn-warning btn-lg' : loginForm.$invalid, 'btn btn-success btn-lg' : loginForm.$valid}" type="submit">Log in <span id="spinner"></span> </button>
+
+            </form>
+            <div ng-show="loginForm.$submitted && !accountLoginCheck.isValid">
+                <div class="form-group has-error spacer">
+                    <label class="control-label">{{accountLoginCheck.msg}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
