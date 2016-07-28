@@ -1,0 +1,17 @@
+const mongoCollections = require("../config/mongoCollections");
+const _exampleCollection = mongoCollections.example;
+const uuid = require('node-uuid');
+const ObjectId = require('mongodb').ObjectId; 
+
+
+let exportedMethods = {
+    exampleDBCall() {
+        return _exampleCollection().then((exampleCollection) => {
+            return recipeCollection.find({}).toArray();
+        },(error)=>{
+            throw error;
+        })
+    }
+}
+
+module.exports = exportedMethods;
