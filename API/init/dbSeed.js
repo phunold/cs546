@@ -1,7 +1,7 @@
 const dbConnection = require("../config/mongoConnection");
 const DAL = require("../DAL/");
 const uuid = require('node-uuid');
-const exampleDAL = DAL.recipeDAL;
+const exampleDAL = DAL.exampleDAL;
 
 
 dbConnection().then(db => {

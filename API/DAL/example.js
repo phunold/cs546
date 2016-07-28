@@ -7,11 +7,11 @@ const ObjectId = require('mongodb').ObjectId;
 let exportedMethods = {
     exampleDBCall() {
         return _exampleCollection().then((exampleCollection) => {
-            return recipeCollection.find({}).toArray();
+            return exampleCollection.find({}).toArray();
         },(error)=>{
             throw error;
         })
     }
 }
-
+ewwde
 module.exports = exportedMethods;

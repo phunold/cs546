@@ -1,14 +1,14 @@
 {
-  "name": "lab6",
+  "name": "Grand Salami",
   "version": "1.0.0",
-  "description": "Recipe API",
+  "description": "Final Project for CS546",
   "main": "app.js",
   "scripts": {
     "seed": "node ./init/dbSeed.js",
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Troy M Koss",
+  "author": "Team Built",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.2",
