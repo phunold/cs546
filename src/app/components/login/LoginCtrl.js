@@ -24,7 +24,7 @@
         function loginResponse(response){
             if (response.success) {
                 AuthenticationService.StoreUserData(vm.username, vm.password);
-                $state.go('home');
+                $state.go('app.home');
             } else {
                 alert(response.message);
                 vm.dataLoading = false;

@@ -18,7 +18,7 @@
                     if (response.success) {
                         $state.go('login');
                     } else {
-                        error(response.message);
+                        alert(response.message);
                         vm.dataLoading = false;
                     }
                 });

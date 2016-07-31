@@ -4,6 +4,12 @@ let app = express();
 let configRoutes = require("./routes");
 
 app.use(bodyParser.json());
+// application -------------------------------------------------------------
+// https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular
+app.get('*', function(req, res) {
+    res.sendfile('./app/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
+
 configRoutes(app);
 
 app.listen(3000, () => {
