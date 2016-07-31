@@ -13,5 +13,5 @@ let exportedMethods = {
         })
     }
 }
-ewwde
+
 module.exports = exportedMethods;
