@@ -5,7 +5,6 @@ let configRoutes = require("./routes");
 var path = require('path');
 
 app.use(express.static(__dirname + '/app')); 
-//app.use(express.static(path.join(__dirname, 'app')));
 
 app.use(bodyParser.json());
 // application -------------------------------------------------------------

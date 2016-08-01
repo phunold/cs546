@@ -47,7 +47,7 @@
             })
             .state('app.league', {
                 url: '/league',
-                templateUrl: '/comsdfasdfsponents/league/leagueView.html',
+                templateUrl: 'components/league/leagueView.html',
                 controller: 'LeagueCtrl',
                 controllerAs: 'vm',
                 data: {
@@ -56,13 +56,22 @@
             })
             .state('app.leaderboards', {
                 url: '/leaderboards',
-                templateUrl: '/comsdfasdfsponents/league/leaderboardsView.html',
+                templateUrl: 'components/leaderboards/leaderboardsView.html',
                 controller: 'LeaderboardsCtrl',
                 controllerAs: 'vm',
                 data: {
                     pageTitle: "Leaderboards"
                 }
             })
+            .state('app.scores', {
+                url: '/scores',
+                templateUrl: 'components/scores/scoresView.html',
+                controller: 'ScoresCtrl',
+                controllerAs: 'vm',
+                data: {
+                    pageTitle: "MLB Scores"
+                }
+            });
 
 
        
