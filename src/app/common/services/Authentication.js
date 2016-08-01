@@ -5,8 +5,8 @@
         .module('app')
         .factory('AuthenticationService', AuthenticationService);
 
-    AuthenticationService.$inject = ['$http', '$rootScope', '$timeout', 'UserService'];
-    function AuthenticationService($http, $rootScope, $timeout, UserService) {
+    AuthenticationService.$inject = ['$http', '$rootScope', '$timeout', 'UserService','$q'];
+    function AuthenticationService($http, $rootScope, $timeout, UserService, $q) {
         var service = {};
 
         service.Login = Login;
@@ -15,8 +15,9 @@
 
         return service;
 
-        function Login(responseFunction, user, pass) {
-
+        function Login(user, pass) {
+            
+            var deferred = $q.defer();
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
             $timeout(function () {
@@ -24,14 +25,14 @@
                 UserService.GetByUsername(user)
                     .then(function (user) {
                         if (user !== null && user.password === pass) {
-                            response = { success: true };
+                            deferred.resolve(true);
                         } else {
-                            response = { success: false, message: 'Username or password is incorrect' };
+                            deffered.reject('Username or password is incorrect');
                         }
-                        responseFunction(response);
                     });
+                   
             }, 1000);
-
+            return deferred.promise;
             /* Use this for real authentication
              ----------------------------------------------*/
             //$http.post('/api/authenticate', { username: username, password: password })

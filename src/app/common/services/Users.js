@@ -49,7 +49,7 @@
                 GetByUsername(user.username)
                     .then(function (duplicateUser) {
                         if (duplicateUser !== null) {
-                            deferred.resolve({ success: false, message: 'Username "' + user.username + '" is already taken' });
+                            deferred.reject('Username "' + user.username + '" is already taken');
                         } else {
                             var users = getUsers();
 
@@ -61,7 +61,7 @@
                             users.push(user);
                             setUsers(users);
 
-                            deferred.resolve({ success: true });
+                            deferred.resolve(true);
                         }
                     });
             }, 1000);

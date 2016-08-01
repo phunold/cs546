@@ -18,16 +18,20 @@
 
         function login() {
             vm.dataLoading = true;
-            AuthenticationService.Login(loginResponse, vm.username, vm.password);
+            AuthenticationService.Login(vm.username, vm.password).then(function(success){
+                AuthenticationService.StoreUserData(vm.username, vm.password);
+                $state.go('app.home');
+            },function(error){
+                alert(error);
+                vm.dataLoading = false;
+            });
         };
         
         function loginResponse(response){
             if (response.success) {
-                AuthenticationService.StoreUserData(vm.username, vm.password);
-                $state.go('app.home');
+               
             } else {
-                alert(response.message);
-                vm.dataLoading = false;
+                
             }
         };
     }

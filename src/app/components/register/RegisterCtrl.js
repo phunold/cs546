@@ -15,12 +15,12 @@
             vm.dataLoading = true;
             UserService.Create(vm.user)
                 .then(function (response) {
-                    if (response.success) {
+                    if (response) {
                         $state.go('login');
-                    } else {
-                        alert(response.message);
-                        vm.dataLoading = false;
                     }
+                },function(error){
+                    alert(error);
+                    vm.dataLoading = false;
                 });
         }
     }
