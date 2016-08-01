@@ -47,13 +47,24 @@
             })
             .state('app.league', {
                 url: '/league',
-                templateUrl: 'components/league/leagueView.html',
+                templateUrl: '/comsdfasdfsponents/league/leagueView.html',
                 controller: 'LeagueCtrl',
                 controllerAs: 'vm',
                 data: {
                     pageTitle: "League"
                 }
             })
+            .state('app.leaderboards', {
+                url: '/leaderboards',
+                templateUrl: '/comsdfasdfsponents/league/leaderboardsView.html',
+                controller: 'LeaderboardsCtrl',
+                controllerAs: 'vm',
+                data: {
+                    pageTitle: "Leaderboards"
+                }
+            })
+
+
        
        
     }
