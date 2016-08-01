@@ -5,10 +5,10 @@
 
     angular
         .module('app')
-        .factory('UserService', UserService);
+        .factory('SalamiService', SalamiService);
 
-    UserService.$inject = ['$http'];
-    function UserService($http) {
+    SalamiService.$inject = ['$http'];
+    function SalamiService($http) {
         var service = {};
 
         service.GetAll = GetAll;
@@ -16,7 +16,7 @@
         return service;
 
         function GetAll() {
-            return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+            return $http.get('/api/salami').then(handleSuccess, handleError('Error getting something'));
         }
         // private functions
 
