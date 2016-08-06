@@ -27,7 +27,7 @@
                         if (user !== null && user.password === pass) {
                             deferred.resolve(true);
                         } else {
-                            deffered.reject('Username or password is incorrect');
+                            deferred.reject('Username or password is incorrect');
                         }
                     });
                    

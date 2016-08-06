@@ -27,13 +27,6 @@
             });
         };
         
-        function loginResponse(response){
-            if (response.success) {
-               
-            } else {
-                
-            }
-        };
     }
 
 })();
