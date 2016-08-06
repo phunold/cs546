@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const DAL = require("../DAL");
 const exampleDAL = DAL.exampleDAL;
+const Data = require("../Data");
+const exampleData = Data.exampleData;
 
 //GET METHODS
 //
 router.get("/", (req, res) => { 
-    recipeDAL.exampleDBCall().then((dataList) => {
+    exampleDAL.exampleDBCall().then((dataList) => {
         res.json(dataList);
     }).catch((e) => {
         res.status(500).json({ error: e });
