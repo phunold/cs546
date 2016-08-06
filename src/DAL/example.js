@@ -11,6 +11,10 @@ let exportedMethods = {
         },(error)=>{
             throw error;
         })
+    },
+    someFunction(){
+        //go do this...
+        
     }
 }
 

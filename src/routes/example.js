@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const DAL = require("../DAL");
 const exampleDAL = DAL.exampleDAL;
-const Data = require("../Data");
-const exampleData = Data.exampleData;
+//const Data = require("../Data");
+//const exampleData = Data.exampleData;
 
 //GET METHODS
 //
