@@ -3,6 +3,17 @@ const salamiCollection = mongoCollections.grandsalami;
 const uuid = require('node-uuid');
 const ObjectId = require('mongodb').ObjectId; 
 
+let  getCurrentSalami = function (){
+        //get today's salami 
+        return salamiCollection.then((salamiCollection) =>{
+            return salamiCollection.find({"day": { '$gte': new Date() } }).then((currentSalami) =>{
+                console.log("Got today's salami!");
+                return currentSalami;
+            }, (error) =>{
+                console.log("Unable to fetch today's salami!");
+            })
+        })
+    }
 
 let exportedMethods = {
 	createSalami(salamiNumber, finalScore, flag, status){ 
@@ -18,19 +29,7 @@ let exportedMethods = {
             throw error;
         })
     },
-    
-    getCurrentSalami(){
-        //get today's salami 
-        return salamiCollection.then((salamiCollection) =>{
-            return salamiCollection.find({"day": { '$gte': new Date() } }).then((currentSalami) =>{
-                console.log("Got today's salami!");
-                return currentSalami;
-            }, (error) =>{
-                console.log("Unable to fetch today's salami!");
-            })
-        })
-    },
-
+   
     getSalami(){
         //gets current day's salami number
         return getCurrentSalami().then((currentSalami)=>{
