@@ -20,5 +20,8 @@ let getCollectionFn = (collection) => {
 /* Now, you can list your collections here: */
 module.exports = {
     example: getCollectionFn("example"),
-
+    grandsalami : getCollectionFn("grandsalami"),
+    users: getCollectionFn("users"),
+    wagers: getCollectionFn("wagers"),
+    leagues: getCollectionFn("leagues")
 };
