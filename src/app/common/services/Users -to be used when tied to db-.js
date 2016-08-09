@@ -19,7 +19,11 @@
         return service;
 
         function GetAll() {
-            return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+            return $http.get('/api/users').then(function(response){
+                return response;
+            },function(error){
+                throw "Error getting all users: " + error;
+            });
         }
 
         function GetById(id) {
@@ -30,6 +34,14 @@
             return $http.get('/api/users/' + username).then(handleSuccess, handleError('Error getting user by username'));
         }
 
+        function GetTopRecordHolders(){
+            return $http.get('/api/users/top/').then(handleSuccess, handleError('Error getting user by id'));
+
+        }
+        function GetUsersByLeague(leagueId){
+            return $http.get('/api/users/league/',{params:{leagueId:leagueId}}).then(handleSuccess, handleError('Error getting user by username'));
+
+        }
         function Create(user) {
             return $http.post('/api/users', user).then(handleSuccess, handleError('Error creating user'));
         }

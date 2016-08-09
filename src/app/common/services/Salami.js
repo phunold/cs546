@@ -1,5 +1,3 @@
-//salami service
-
 (function () {
     'use strict';
 
@@ -7,28 +5,47 @@
         .module('app')
         .factory('SalamiService', SalamiService);
 
-    SalamiService.$inject = ['$http'];
-    function SalamiService($http) {
+    SalamiService.$inject = ['$http', '$timeout', 'UserService','$q'];
+    function SalamiService($http, $timeout, UserService, $q) {
         var service = {};
 
-        service.GetAll = GetAll;
+        //service.GetCurrentSalami = GetCurrentSalami;
 
         return service;
 
-        function GetAll() {
-            return $http.get('/api/salami').then(handleSuccess, handleError('Error getting something'));
-        }
-        // private functions
+        function GetCurrentSalami() {
+            var deferred = $q.defer();
 
-        function handleSuccess(res) {
-            return res.data;
+            $http.get('/api/salami').then(function(success){
+                deferred.resolve(success.data);
+            },function(error){
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+
+        }
+        function GetCurrentSalami2() {
+            return $http.get('/api/salami').then(function(success){
+                return success.data;
+            },function(error){
+                throw error;
+            });
         }
 
-        function handleError(error) {
-            return function () {
-                return { success: false, message: error };
-            };
+        function PlaceSalamiWager(wager,wagerAmount){
+            var wagerObj = {
+                wager: wager,
+                wagerAmount: wagerAmount
+            }
+            return $http.post('/api/salami',wagerObj).then(function(wagerId){
+                alert("Success! Wager: "+ wagerId + " placed");
+
+            },function(error){
+
+            });
         }
     }
+
 
 })();
