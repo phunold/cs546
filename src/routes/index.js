@@ -5,6 +5,7 @@ const authRoutes = require("./auth");
 
 const constructorMethod = (app) => {
     app.use("api/example/", exampleRoutes);
+    app.use("api/users/", usersRoutes);
 
     //not using this since angular will handle routes
     // app.use("*", (req, res) => {
