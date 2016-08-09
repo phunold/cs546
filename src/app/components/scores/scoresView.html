@@ -1,2 +1,60 @@
-<h1>Scores</h1>
-
+<div class="panel panel-default col-sm-3" ng-repeat="game in vm.currentGames track by $index">
+  <div class="panel-heading">{{game.title}}</div>
+  <div class="panel-body">
+    <ul class="list-group">
+    <li class="list-group-item">
+        <span class="badge">{{game.team1Score}}</span>
+        {{game.team1}}
+    </li>
+    <li class="list-group-item">
+        <span class="badge">{{game.team2Score}}</span>
+        {{game.team2}}
+    </li>
+    </ul>
+  </div>
+</div>
+<div class="panel panel-default col-sm-3">
+  <div class="panel-heading">Game Score</div>
+  <div class="panel-body">
+    <ul class="list-group">
+    <li class="list-group-item">
+        <span class="badge">5</span>
+        Team A
+    </li>
+    <li class="list-group-item">
+        <span class="badge">4</span>
+        Team B
+    </li>
+    </ul>
+  </div>
+</div>
+<div class="panel panel-default col-sm-3">
+  <div class="panel-heading">Game Score</div>
+  <div class="panel-body">
+    <ul class="list-group">
+    <li class="list-group-item">
+        <span class="badge">5</span>
+        Team A
+    </li>
+    <li class="list-group-item">
+        <span class="badge">4</span>
+        Team B
+    </li>
+    </ul>
+  </div>
+</div>
+<div class="panel panel-default col-sm-3">
+  <div class="panel-heading">Game Score</div>
+  <div class="panel-body">
+    <ul class="list-group">
+    <li class="list-group-item">
+        <span class="badge">5</span>
+        Team A
+    </li>
+    <li class="list-group-item">
+        <span class="badge">4</span>
+        Team B
+    </li>
+    </ul>
+  </div>
+</div>

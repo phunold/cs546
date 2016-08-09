@@ -1,2 +1,34 @@
-<h1>Hello Leaders</h1>
 
+<div class="panel panel-primary">
+    <div class="panel-heading"><h1>Global Leaderboard <small style="color:#ffffff">Ranked by wins</small></h1></div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Wins</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in vm.leaderboardUsers track by $index">
+                <th scope="row">{{$index}}</th>
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <td>{{user.record.wins}}</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

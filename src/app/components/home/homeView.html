@@ -1,4 +1,4 @@
-<h1>Hi {{vm.user.firstName}}!</h1>
+<!--<h1>Hi {{vm.user.firstName}}!</h1>
 <p>You're logged in!!</p>
 <h3>All registered users:</h3>
 <ul>
@@ -8,4 +8,58 @@
     </li>
 </ul>
 <p>&nbsp;</p>
-<p><a href="#/login" class="btn btn-primary">Logout</a></p>
+<p><a href="#/login" class="btn btn-primary">Logout</a></p>-->
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1>Grand Salami <small>8/19/2016 {{vm.currentSalami.date}}</small></h1>
+            <h2>64 {{vm.currentSalami.salamiNumber}}</h2>
+            <h2>Live Salami: <small>{{vm.scores.summation}}</small></h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4" ng-hide="vm.user.hasCurrentDayWager == false">
+            <h3>Your Wager Is: {{vm.user.currentWager}}</h3>
+        </div>
+        <div class="col-sm-4 col-sm-offset-4" ng-hide="vm.user.hasCurrentDayWager">
+            <label for="newWager">Set your wager: </label>
+            <select id="newWager" class="form-control" ng-model="vm.newWager.wager" class="form-control">
+                <option value="over">Over</option>
+                <option value="under">Under</option>
+            </select>
+            <button class="btn btn-success" ng-click="vm.placeSalamiWager()">Place Wager</button>
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-sm-4">
+        <blockquote>
+        <p>Your Current Record: </p>
+        </blockquote>
+    </div>
+    <div class="col-sm-4">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <span class="badge">12 {{vm.user.record.wins}}</span>
+                Wins
+            </li>
+            <li class="list-group-item">
+                <span class="badge">34 {{vm.user.record.losses}}</span>
+                Losses
+            </li>
+            <li class="list-group-item">
+                <span class="badge">4 {{vm.user.record.draws}}</span>
+                Push Bets
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
