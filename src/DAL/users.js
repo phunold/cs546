@@ -27,6 +27,16 @@ let validateLeague = function(leagueId){
 }
 
 let exportedMethods = {
+
+    getAllUsers(){
+        return userCollection().then((users)=>{
+            console.log("Fetched all user documents!")
+            return users;
+        }, (error)=>{
+            console.log("Couldn't retrieve user documents!")
+        })
+    },
+
     createUser(fname,lname,email,password){
         //create a user with given values
         if(uniqueEmail(email)){
