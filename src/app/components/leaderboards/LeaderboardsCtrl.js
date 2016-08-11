@@ -5,16 +5,26 @@
         .module('app')
         .controller('LeaderboardsCtrl', LeaderboardsCtrl);
 
-    LeaderboardsCtrl.$inject = ['$rootScope'];
-    function LeaderboardsCtrl($rootScope) {
+    LeaderboardsCtrl.$inject = ['$rootScope','UserService'];
+    function LeaderboardsCtrl($rootScope, UserService) {
         var vm = this;
+
+        vm.leaderboardUsers = null;
 
         initController();
 
         function initController() {
-            console.log("Loaded LeaderboardsCtrl")
+            //getLeaderboardUsers();
         }
 
+        function getLeaderboardUsers(){
+            UserService.GetTopRecordHolders().then(function(users){ 
+                vm.leaderboardUsers = users;
+            },function(error){
+                alert("Error loading leaderboard: "+error);
+            });
+        }
+        
        
     }
 

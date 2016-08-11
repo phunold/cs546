@@ -35,11 +35,13 @@
         }
 
         function GetTopRecordHolders(){
+            //returns json obj with array of user objects. 
+            //User objects will be filtered down to just have name and record (no password, balance, etc for security)
             return $http.get('/api/users/top/').then(handleSuccess, handleError('Error getting user by id'));
 
         }
         function GetUsersByLeague(leagueId){
-            return $http.get('/api/users/league/',{params:{leagueId:leagueId}}).then(handleSuccess, handleError('Error getting user by username'));
+            return $http.get('/api/users/league/'+ leagueId,).then(handleSuccess, handleError('Error getting user by username'));
 
         }
         function Create(user) {

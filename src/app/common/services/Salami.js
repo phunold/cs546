@@ -5,8 +5,8 @@
         .module('app')
         .factory('SalamiService', SalamiService);
 
-    SalamiService.$inject = ['$http', '$timeout', 'UserService','$q'];
-    function SalamiService($http, $timeout, UserService, $q) {
+    SalamiService.$inject = ['$http', '$timeout','$q'];
+    function SalamiService($http, $timeout, $q) {
         var service = {};
 
         //service.GetCurrentSalami = GetCurrentSalami;
@@ -33,18 +33,7 @@
             });
         }
 
-        function PlaceSalamiWager(wager,wagerAmount){
-            var wagerObj = {
-                wager: wager,
-                wagerAmount: wagerAmount
-            }
-            return $http.post('/api/salami',wagerObj).then(function(wagerId){
-                alert("Success! Wager: "+ wagerId + " placed");
-
-            },function(error){
-
-            });
-        }
+        
     }
 
 
