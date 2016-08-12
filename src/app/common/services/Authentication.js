@@ -15,7 +15,7 @@
 
         return service;
 
-        function Login(user, pass) {
+        function Login(email, pass) {
             
             var deferred = $q.defer();
             /* Dummy authentication for testing, uses $timeout to simulate api call
