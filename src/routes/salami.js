@@ -8,8 +8,8 @@ const salamiDAL = DAL.salamiDAL;
 //GET METHODS
 //get Salami
 router.get("/salami", (req, res) => { 
-    salamiDAL.getCurrentSalami().then((dataList) => {
-        res.json(dataList);
+    salamiDAL.getCurrentSalami().then((salami) => {
+        res.json(salami);
     }).catch((e) => {
         res.status(500).json({ error: e });
     });

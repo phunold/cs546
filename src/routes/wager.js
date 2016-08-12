@@ -16,10 +16,10 @@ router.get("/:username", (req, res) => {
 
 //create wager
 router.post("/", (req, res) => { 
-	var wager = req.param('wagerObj');
-	var userID = req.param('userID');
-	var timestamp = req.param('timestamp');
-	var side = req.param('side');
+	var wager = req.body;
+	var userID = wager.userID;
+	var timestamp = wager.timestamp;
+	var side = wager.wager;
 
 	usersDAL.createWager(userID, timestamp, side).catch((e) => {
 		res.status(500).json({ error: e });

@@ -17,8 +17,8 @@ router.get("/", (req, res) => {
 
 //Get by ID
 router.get("/:id", (req, res) => { 
-    usersDAL.getUserByID(req.params.id).then((dataList) => {
-        res.json(dataList);
+    usersDAL.getUserByID(req.params.id).then((user) => {
+        res.json(user);
     }).catch((e) => {
         res.status(500).json({ error: e });
     });
@@ -26,16 +26,16 @@ router.get("/:id", (req, res) => {
 
 //Get by Username/Email
 router.get("/:email", (req, res) => { 
-    usersDAL.getUserByEmail(req.params.email).then((dataList) => {
-        res.json(dataList);
+    usersDAL.getUserByEmail(req.params.email).then((user) => {
+        res.json(user);
     }).catch((e) => {
         res.status(500).json({ error: e });
     });
 });
 
 router.get("/top", (req, res) => { 
-    usersDAL.getTopUsers().then((dataList) => {
-        res.json(dataList);
+    usersDAL.getTopUsers().then((topUsers) => {
+        res.json(topUsers);
     }).catch((e) => {
         res.status(500).json({ error: e });
     });
@@ -43,8 +43,8 @@ router.get("/top", (req, res) => {
 
 //Get by league
 router.get("/league/:leagueID", (req, res) => { 
-    usersDAL.getUsersByLeague(req.params.leagueID).then((dataList) => {
-        res.json(dataList);
+    usersDAL.getUsersByLeague(req.params.leagueID).then((league) => {
+        res.json(league);
     }).catch((e) => {
         res.status(500).json({ error: e });
     });
@@ -53,7 +53,7 @@ router.get("/league/:leagueID", (req, res) => {
 //POST METHODS
 //Create User
 router.post("/", (req, res) => {
-    var user = req.param('user');
+    var user = req.body;
 	var fname = user.fname;
 	var lname = user.lname;
 	var email = user.email;
@@ -66,8 +66,9 @@ router.post("/", (req, res) => {
 
 //Join league
 router.post("/join", (req, res) => {
-	var userID = req.param('userID');
-	var leagueID = req.param('leagueID');
+	var info = req.body;
+	var userID = info.userID;
+	var leagueID = info.leagueID;
 
 	usersDAL.joinLeague(userID, leagueID).catch((e) => {
 		res.status(500).json({ error: e });
@@ -77,7 +78,7 @@ router.post("/join", (req, res) => {
 //PUT METHODS
 //Update
 router.put("/:id", (req, res) => {
-    var user = req.param('user');
+    var user = req.body;
 	var userID = user.id;
 	var result = req.param('result');
 
