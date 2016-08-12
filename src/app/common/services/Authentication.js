@@ -25,7 +25,7 @@
                 UserService.GetByEmail(email)
                     .then(function (user) {
                         if (user !== null && user.password === pass) {
-                            deferred.resolve(true);
+                            deferred.resolve("sessionid-tok");
                         } else {
                             deferred.reject('Email or password is incorrect');
                         }
