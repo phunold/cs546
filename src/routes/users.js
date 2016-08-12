@@ -17,16 +17,33 @@ router.get("/", (req, res) => {
 
 //Get by ID
 router.get("/:id", (req, res) => { 
-    usersDAL.getUserByID().then((dataList) => {
+    usersDAL.getUserByID(req.params.id).then((dataList) => {
         res.json(dataList);
     }).catch((e) => {
         res.status(500).json({ error: e });
     });
 });
 
-//Get by Email
+//Get by Username/Email
 router.get("/:email", (req, res) => { 
-    usersDAL.getUserByEmail().then((dataList) => {
+    usersDAL.getUserByEmail(req.params.email).then((dataList) => {
+        res.json(dataList);
+    }).catch((e) => {
+        res.status(500).json({ error: e });
+    });
+});
+
+router.get("/top", (req, res) => { 
+    usersDAL.getTopUsers().then((dataList) => {
+        res.json(dataList);
+    }).catch((e) => {
+        res.status(500).json({ error: e });
+    });
+});
+
+//Get by league
+router.get("/league/:leagueID", (req, res) => { 
+    usersDAL.getUsersByLeague(req.params.leagueID).then((dataList) => {
         res.json(dataList);
     }).catch((e) => {
         res.status(500).json({ error: e });
@@ -35,11 +52,12 @@ router.get("/:email", (req, res) => {
 
 //POST METHODS
 //Create User
-router.post("/create/user", (req, res) => {
-	var fname = req.param('fname');
-	var lname = req.param('lname');
-	var email = req.param('email');
-	var passwd = req.param('passwd');
+router.post("/", (req, res) => {
+    var user = req.param('user');
+	var fname = user.fname;
+	var lname = user.lname;
+	var email = user.email;
+	var passwd = user.passwd;
 
 	usersDAL.createUser(fname, lname, email, passwd).catch((e) => {
 		res.status(500).json({ error: e });
@@ -56,37 +74,25 @@ router.post("/join", (req, res) => {
 	});
 });
 
-//Create Wager
-router.post("/create/wager", (req, res) => {
-	var userID = req.param('userID');
-	var timestamp = req.param('timestamp');
-	var side = req.param('side');
-
-	usersDAL.createWager(userID, timestamp, side).catch((e) => {
-		res.status(500).json({ error: e });
-	});
-});
-
-router.post("/update", (req, res) => {
-	var userID = req.param('userID');
+//PUT METHODS
+//Update
+router.put("/:id", (req, res) => {
+    var user = req.param('user');
+	var userID = user.id;
 	var result = req.param('result');
 
-	usersDAL.updateRecord(uesrID, result).catch((e) => {
+	usersDAL.updateUser(id, updatedUser).catch((e) => {
 		res.status(500).json({ error: e });
 	});
 });
 
-//PUT METHODS
-//
-// router.put("/:id", (req, res) => {
-   
-
-// });
-
 //DELETE METHODS
-//
-// router.delete("/:id", (req, res) => {
-    
-// });
+//Delete
+router.delete("/:id", (req, res) => { 
+    usersDAL.deleteUser(req.params.id).catch((e) => {
+		res.status(500).json({ error: e });
+	});
+});
+
 
 module.exports = router;
