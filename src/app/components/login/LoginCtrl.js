@@ -18,8 +18,8 @@
 
         function login() {
             vm.dataLoading = true;
-            AuthenticationService.Login(vm.email, vm.password).then(function(success){
-                AuthenticationService.StoreUserData(vm.email, vm.password);
+            AuthenticationService.Login(vm.email, vm.password).then(function(sessionId){
+                AuthenticationService.StoreUserData(vm.email, sessionId);
                 $state.go('app.home');
             },function(error){
                 alert(error);

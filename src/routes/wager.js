@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const DAL = require("../DAL");
 const wagerDAL = DAL.wagerDAL;
-//const Data = require("../Data");
-//const exampleData = Data.exampleData;
 
 //get last wager
 router.get("/:username", (req, res) => { 

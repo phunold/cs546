@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const DAL = require("../DAL");
 const usersDAL = DAL.usersDAL;
-//const Data = require("../Data");
-//const exampleData = Data.exampleData;
 
 //GET METHODS
 //Get all users

@@ -81,14 +81,16 @@
     run.$inject = ['$rootScope', '$state', '$http'];
     function run($rootScope, $state,  $http) {
         // keep user logged in after page refresh
+        // if we used token based authentication to login
         if(!localStorage.CUR_USER){
             localStorage.CUR_USER = JSON.stringify({});
         }
         $rootScope.curUser = JSON.parse(localStorage.CUR_USER);
     
         if ($rootScope.curUser) {
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.curUser.authData; 
+            //$http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.curUser.authData; 
             //token appending to header. will need to verify when getting api calls
+            //not going with this approach. going to use cookies instead. 
         }
 
         //init for page tile on change
@@ -111,8 +113,8 @@
                 restrictedPage = true;
             }
 
-            //TODO: make query to a service to get restricted states and load them 
-            // maybe because of the time crunch we just hardcode an array of states here like the home
+            //We could make query to a service to get restricted states and load them 
+            // or just hardcode states here
             // var restrictedPages = [];
             // someService.getRestrictedPages().then(function(pages){
             //     restrictedPages = pages;
@@ -126,7 +128,6 @@
                 !Object.keys(curUser).length? curUser=false : null;
             }
             if (restrictedPage && !curUser) {
-                //$location.path('/login');
                 event.preventDefault();
                 $state.go('login');
                 return;

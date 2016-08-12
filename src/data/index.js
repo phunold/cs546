@@ -1,4 +1,4 @@
 module.exports = {
-    //exampleData: require("./example"),
+    //authData: require("./auth"),
 
 };

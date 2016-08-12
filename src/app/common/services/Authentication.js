@@ -34,24 +34,29 @@
             }, 1000);
             return deferred.promise;
             /* Use this for real authentication
-             ----------------------------------------------*/
-            //$http.post('/api/authenticate', { email: email, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
+             ----------------------------------------------
+            return $http.post('/api/authenticate', { email: email, password: password }).then(
+                function(response){
+                    return response.data.session.id; //TODO: figure out what returns;
+                },function(error){
+                    throw error;
+                });
+
+                */
+            
 
         }
 
-        function StoreUserData(email, password) {
+        function StoreUserData(email, sessionId) {
             //make a secret token
-            var authData = window.btoa(email + ':' + password);
 
             $rootScope.curUser = {
                     email: email,
-                    authdata: authData
+                    authdata: sessionId
                 };
 
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + authData; 
+                // using cookie authentication instead of header.
+            //$http.defaults.headers.common['Authorization'] = 'Basic ' + sessionId; 
             localStorage.CUR_USER = JSON.stringify($rootScope.curUser);
             
         }
@@ -59,7 +64,9 @@
         function RemoveUserData() {
             $rootScope.curUser = {};
             localStorage.CUR_USER = null;
-            $http.defaults.headers.common.Authorization = 'Basic';
+            //TODO: $http.get('/api/logout'); 
+            //$http.defaults.headers.common.Authorization = 'Basic';
+
         }
     }
 
