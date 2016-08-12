@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 });
 
 //Get by ID
-router.get("/:id", (req, res) => { 
+router.get("/id/:id", (req, res) => { 
     usersDAL.getUserByID(req.params.id).then((user) => {
         res.json(user);
     }).catch((e) => {

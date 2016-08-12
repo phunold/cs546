@@ -7,7 +7,8 @@ const wagerDAL = DAL.wagerDAL;
 
 //get last wager
 router.get("/:username", (req, res) => { 
-    wagerDAL.getCurrentSalami().then((dataList) => {
+	var email = req.params.username;
+    wagerDAL.getLastWagerByEmail().then((dataList) => {
         res.json(dataList);
     }).catch((e) => {
         res.status(500).json({ error: e });

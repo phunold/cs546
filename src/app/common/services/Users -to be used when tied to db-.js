@@ -11,7 +11,7 @@
 
         service.GetAll = GetAll;
         service.GetById = GetById;
-        service.GetByUsername = GetByUsername;
+        service.GetByEmail = GetByEmail;
         service.Create = Create;
         service.Update = Update;
         service.Delete = Delete;
@@ -27,11 +27,11 @@
         }
 
         function GetById(id) {
-            return $http.get('/api/users/' + id).then(handleSuccess, handleError('Error getting user by id'));
+            return $http.get('/api/users/id/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
-        function GetByUsername(username) {
-            return $http.get('/api/users/' + username).then(handleSuccess, handleError('Error getting user by username'));
+        function GetByEmail(email) {
+            return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
         }
 
         function GetTopRecordHolders(){
@@ -41,7 +41,7 @@
 
         }
         function GetUsersByLeague(leagueId){
-            return $http.get('/api/users/league/'+ leagueId,).then(handleSuccess, handleError('Error getting user by username'));
+            return $http.get('/api/users/league/'+ leagueId,).then(handleSuccess, handleError('Error getting user by league'));
 
         }
         function Create(user) {

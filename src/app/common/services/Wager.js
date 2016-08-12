@@ -29,8 +29,8 @@
         }
 
         function GetLastWager(){
-            UserService.GetByUsername($rootScope.curUser.username).then(function(user){
-                return $http.get('/api/wager/'+user.username);
+            UserService.GetByEmail($rootScope.curUser.email).then(function(user){
+                return $http.get('/api/wager/'+user.email);
             }).then(function(wager){
                 //if we want to modify the wager info before it goes back to controller do it here
                 return wager;

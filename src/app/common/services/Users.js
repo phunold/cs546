@@ -12,7 +12,7 @@
 
         service.GetAll = GetAll;
         service.GetById = GetById;
-        service.GetByUsername = GetByUsername;
+        service.GetByEmail = GetByEmail;
         service.Create = Create;
         service.Update = Update;
         service.Delete = Delete;
@@ -33,9 +33,9 @@
             return deferred.promise;
         }
 
-        function GetByUsername(username) {
+        function GetByEmail(email) {
             var deferred = $q.defer();
-            var filtered = $filter('filter')(getUsers(), { username: username });
+            var filtered = $filter('filter')(getUsers(), { email: email });
             var user = filtered.length ? filtered[0] : null;
             deferred.resolve(user);
             return deferred.promise;
@@ -46,10 +46,10 @@
 
             // simulate api call with $timeout
             $timeout(function () {
-                GetByUsername(user.username)
+                GetByEmail(user.email)
                     .then(function (duplicateUser) {
                         if (duplicateUser !== null) {
-                            deferred.reject('Username "' + user.username + '" is already taken');
+                            deferred.reject('Email "' + user.email + '" is already taken');
                         } else {
                             var users = getUsers();
 

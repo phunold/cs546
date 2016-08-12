@@ -28,7 +28,7 @@
         }
 
         function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.curUser.username)
+            UserService.GetByEmail($rootScope.curUser.email)
                 .then(function (user) {
                     vm.user = user;
                     //getLeaugeInformation(user.leagueId);

@@ -22,12 +22,12 @@
              ----------------------------------------------*/
             $timeout(function () {
                 var response;
-                UserService.GetByUsername(user)
+                UserService.GetByEmail(email)
                     .then(function (user) {
                         if (user !== null && user.password === pass) {
                             deferred.resolve(true);
                         } else {
-                            deferred.reject('Username or password is incorrect');
+                            deferred.reject('Email or password is incorrect');
                         }
                     });
                    
@@ -35,19 +35,19 @@
             return deferred.promise;
             /* Use this for real authentication
              ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
+            //$http.post('/api/authenticate', { email: email, password: password })
             //    .success(function (response) {
             //        callback(response);
             //    });
 
         }
 
-        function StoreUserData(username, password) {
+        function StoreUserData(email, password) {
             //make a secret token
-            var authData = window.btoa(username + ':' + password);
+            var authData = window.btoa(email + ':' + password);
 
             $rootScope.curUser = {
-                    username: username,
+                    email: email,
                     authdata: authData
                 };
 
