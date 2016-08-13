@@ -42,6 +42,7 @@ let exportedMethods = {
                         "loss": 0,
                         "draw": 0
                         },
+                    "sessions" : [],
                     "league_ids": []
                 }).then((response)=>{
                     var id = response.ksjdflskdj.insertedId;
