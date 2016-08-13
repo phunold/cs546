@@ -43,7 +43,8 @@ let exportedMethods = {
                         "draw": 0
                         },
                     "league_ids": []
-                }).then((id)=>{
+                }).then((response)=>{
+                    var id = response.ksjdflskdj.insertedId;
                     console.log("Created user!");
                     return id;
                 },(error)=>{

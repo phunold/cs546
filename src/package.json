@@ -11,6 +11,7 @@
   "author": "Team Built",
   "license": "MIT",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "mongodb": "^2.1.18",
