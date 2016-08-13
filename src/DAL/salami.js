@@ -16,10 +16,13 @@ let  getCurrentSalami = function (){
     }
 
 let exportedMethods = {
-	createSalami(salamiNumber, finalScore, flag, status){ 
+	createSalami(salamiNumber, finalScore, flag, status,timestamp){ 
         //creates a salami for the current day with given information
+        if(!timestamp || timestamp === ""){
+            timestamp = new Date();
+        }
         return salamiCollection().then((salamis) => {
-            return salamis.insert({"day": new Date(), "grandsalami": salamiNumber, "finalscore": finalScore,"over_under": flag, "status": status}).then((id) => {
+            return salamis.insert({"day": timestamp, "grandsalami": salamiNumber, "finalscore": finalScore,"over_under": flag, "status": status}).then((id) => {
                     console.log("Created Salami!");
                     return id;
                 },(error) =>{
