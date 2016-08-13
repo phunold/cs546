@@ -32,7 +32,13 @@ let exportedMethods = {
             throw error;
         })
     },
-   
+    getCurrentGrandSalami(){
+        return getCurrentSalami().then((currentSalami)=>{
+            return currentSalami;
+        }, (error)=>{
+            console.log("Unable to today's salami number");
+        })
+    },
     getSalami(){
         //gets current day's salami number
         return getCurrentSalami().then((currentSalami)=>{
