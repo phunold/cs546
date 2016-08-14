@@ -113,26 +113,7 @@ let exportedMethods = {
             console.log("Email not found!");
         })
     },
-
-    createWager(userid, timestamp, side){
-        //create a wager with given information for a specified user
-        return getUserByID(userid).then((user) =>{
-             return wagerCollection().insert(
-            {
-                "userid": userid,
-                "timestamp": timestamp,
-                "side": side
-            }).then((id)=>{
-                console.log("Created wager!");
-                return id;
-            },(error)=>{
-                 console.log("Couldn't create wager!");
-            })
-        },(error)=>{
-            console.log("Userid is invalid! Couldn't create wager!");
-        })
-    },
-
+    
     updateRecord(userId, result){
         //update a user's record with either win, loss, or draw
          return getUserByID(userId).then((user)=>{
