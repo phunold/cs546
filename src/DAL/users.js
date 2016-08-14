@@ -37,6 +37,14 @@ let exportedMethods = {
         })
     },
 
+    getTopUsers(){
+        return userCollection().find().sort({"record.win": -1}).limit(15).then((topUsers) =>{
+            return topUsers;    
+        }, (error)=>{
+            throw "Couldn't retrieve top users!";
+        }) 
+    },
+
     createUser(fname,lname,email,password){
         //create a user with given values
         if(uniqueEmail(email)){
@@ -90,6 +98,15 @@ let exportedMethods = {
             console.log("Couldn't get league for the id");
         }
         return null;
+    },
+
+    getUsersByLeague(leagueId){
+        return userCollection().find({"league_ids": leagueId}).then((users)=>{
+            console.log("Found users by league id!");
+            return users;
+        },(error)=>{
+            throw "Cannot find users by league id!";
+        })
     },
 
     getUserByID(userId){
