@@ -8,6 +8,10 @@ const usersDAL = DAL.usersDAL;
 //GET METHODS
 //login the user and get back the sessionId
 router.post("/", (req, res) => {
+
+    console.log("REQ BOD: ",req.body);
+   res.json(req.body); //debugging to make sure route is being hit
+
     //get credentials from body
     authData.loginUser().then((sessionId) => {
         var session = {
