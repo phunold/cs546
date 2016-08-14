@@ -52,8 +52,10 @@ let exportedMethods = {
                         "loss": 0,
                         "draw": 0
                         },
+                    "sessions" : [],
                     "league_ids": []
-                }).then((id)=>{
+                }).then((response)=>{
+                    var id = response.ksjdflskdj.insertedId;
                     console.log("Created user!");
                     return id;
                 },(error)=>{

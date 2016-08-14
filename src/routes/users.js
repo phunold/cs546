@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const DAL = require("../DAL");
 const usersDAL = DAL.usersDAL;
-//const Data = require("../Data");
-//const exampleData = Data.exampleData;
 
 //GET METHODS
 //Get all users
@@ -16,18 +14,35 @@ router.get("/", (req, res) => {
 });
 
 //Get by ID
-router.get("/:id", (req, res) => { 
-    usersDAL.getUserByID().then((dataList) => {
-        res.json(dataList);
+router.get("/id/:id", (req, res) => { 
+    usersDAL.getUserByID(req.params.id).then((user) => {
+        res.json(user);
     }).catch((e) => {
         res.status(500).json({ error: e });
     });
 });
 
-//Get by Email
+//Get by Username/Email
 router.get("/:email", (req, res) => { 
-    usersDAL.getUserByEmail().then((dataList) => {
-        res.json(dataList);
+    usersDAL.getUserByEmail(req.params.email).then((user) => {
+        res.json(user);
+    }).catch((e) => {
+        res.status(500).json({ error: e });
+    });
+});
+
+router.get("/top", (req, res) => { 
+    usersDAL.getTopUsers().then((topUsers) => {
+        res.json(topUsers);
+    }).catch((e) => {
+        res.status(500).json({ error: e });
+    });
+});
+
+//Get by league
+router.get("/league/:leagueID", (req, res) => { 
+    usersDAL.getUsersByLeague(req.params.leagueID).then((league) => {
+        res.json(league);
     }).catch((e) => {
         res.status(500).json({ error: e });
     });
@@ -35,11 +50,12 @@ router.get("/:email", (req, res) => {
 
 //POST METHODS
 //Create User
-router.post("/create/user", (req, res) => {
-	var fname = req.param('fname');
-	var lname = req.param('lname');
-	var email = req.param('email');
-	var passwd = req.param('passwd');
+router.post("/", (req, res) => {
+    var user = req.body;
+	var fname = user.fname;
+	var lname = user.lname;
+	var email = user.email;
+	var passwd = user.passwd;
 
 	usersDAL.createUser(fname, lname, email, passwd).catch((e) => {
 		res.status(500).json({ error: e });
@@ -48,45 +64,34 @@ router.post("/create/user", (req, res) => {
 
 //Join league
 router.post("/join", (req, res) => {
-	var userID = req.param('userID');
-	var leagueID = req.param('leagueID');
+	var info = req.body;
+	var userID = info.userID;
+	var leagueID = info.leagueID;
 
 	usersDAL.joinLeague(userID, leagueID).catch((e) => {
 		res.status(500).json({ error: e });
 	});
 });
 
-//Create Wager
-router.post("/create/wager", (req, res) => {
-	var userID = req.param('userID');
-	var timestamp = req.param('timestamp');
-	var side = req.param('side');
-
-	usersDAL.createWager(userID, timestamp, side).catch((e) => {
-		res.status(500).json({ error: e });
-	});
-});
-
-router.post("/update", (req, res) => {
-	var userID = req.param('userID');
+//PUT METHODS
+//Update
+router.put("/:id", (req, res) => {
+    var user = req.body;
+	var userID = user.id;
 	var result = req.param('result');
 
-	usersDAL.updateRecord(uesrID, result).catch((e) => {
+	usersDAL.updateUser(id, updatedUser).catch((e) => {
 		res.status(500).json({ error: e });
 	});
 });
 
-//PUT METHODS
-//
-// router.put("/:id", (req, res) => {
-   
-
-// });
-
 //DELETE METHODS
-//
-// router.delete("/:id", (req, res) => {
-    
-// });
+//Delete
+router.delete("/:id", (req, res) => { 
+    usersDAL.deleteUser(req.params.id).catch((e) => {
+		res.status(500).json({ error: e });
+	});
+});
+
 
 module.exports = router;

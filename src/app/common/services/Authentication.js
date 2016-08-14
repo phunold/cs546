@@ -15,43 +15,47 @@
 
         return service;
 
-        function Login(user, pass) {
+        function Login(email, pass) {
             
             var deferred = $q.defer();
             /* Dummy authentication for testing, uses $timeout to simulate api call
-             ----------------------------------------------*/
+             ----------------------------------------------
             $timeout(function () {
                 var response;
-                UserService.GetByUsername(user)
+                UserService.GetByEmail(email)
                     .then(function (user) {
                         if (user !== null && user.password === pass) {
-                            deferred.resolve(true);
+                            deferred.resolve("sessionid-tok");
                         } else {
-                            deferred.reject('Username or password is incorrect');
+                            deferred.reject('Email or password is incorrect');
                         }
                     });
                    
             }, 1000);
             return deferred.promise;
-            /* Use this for real authentication
-             ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
 
+            */
+            //Use this for real authentication
+             //----------------------------------------------
+            return $http.post('/api/authenticate', { email: email, password: pass }).then(
+                function(response){
+                    console.log(response);
+                    return response.data.session.id; //TODO: figure out what returns;
+                },function(error){
+                    throw error;
+                });
         }
 
-        function StoreUserData(username, password) {
+        function StoreUserData(email, sessionId) {
             //make a secret token
-            var authData = window.btoa(username + ':' + password);
 
             $rootScope.curUser = {
-                    username: username,
-                    authdata: authData
+                    email: email,
+                    authdata: sessionId
                 };
 
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + authData; 
+                // using cookie authentication instead of header.
+            //$http.defaults.headers.common['Authorization'] = 'Basic ' + sessionId; 
             localStorage.CUR_USER = JSON.stringify($rootScope.curUser);
             
         }
@@ -59,7 +63,9 @@
         function RemoveUserData() {
             $rootScope.curUser = {};
             localStorage.CUR_USER = null;
-            $http.defaults.headers.common.Authorization = 'Basic';
+            //TODO: $http.get('/api/logout'); 
+            //$http.defaults.headers.common.Authorization = 'Basic';
+
         }
     }
 

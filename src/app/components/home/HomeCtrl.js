@@ -69,7 +69,7 @@
 
         //test functions for user management 
         function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.curUser.username)
+            UserService.GetByEmail($rootScope.curUser.email)
                 .then(function (user) {
                     vm.user = user;
                     //TODO: addWagerInfoToUser();

@@ -15,9 +15,9 @@
             vm.dataLoading = true;
             UserService.Create(vm.user)
                 .then(function (response) {
-                    if (response) {
-                        $state.go('login');
-                    }
+                    alert("Congratulations! Now please sign in");
+                    $state.go('login');
+                    
                 },function(error){
                     alert(error);
                     vm.dataLoading = false;

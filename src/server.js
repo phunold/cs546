@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+//TODO: const cookieParser = require('cookie-parser');
 let app = express();
 let configRoutes = require("./routes");
 var path = require('path');
@@ -7,6 +8,44 @@ var path = require('path');
 app.use(express.static(__dirname + '/app')); 
 
 app.use(bodyParser.json());
+//TODO: app.use(cookieParser());
+//TODO: const DAL = require("/DAL");
+//TODO: const usersDAL = DAL.usersDAL;
+//TODO: const Data = require("/data");
+//TODO: const authData = Data.authData;
+//Middlewares:
+/*
+app.use("/api*",function(request,response,next){
+    //check if the user has a sessionid
+    
+    var userId = request.cookie.USER_ID;
+    usersDAL.getUserByID(userId).then(function(user){
+        var sessionId = request.cookie.SESSION_ID;
+        var sessionArray = user.sessions;
+        if(sessionArray.indexOf(sessionId) == -1){
+            response.status(401).send("Unauthorized Access Attempt. Session invalid");
+        }else{
+            next();
+        }
+    },function(error){
+        response.status(500).send("Unauthorized Access Attempt. Session invalid");
+    });
+});
+
+app.use("/api/logout", function(request, response, next){
+    
+    authData.terminateSession().then(function(){
+        //TODO: expire the USER_ID and SESSION_ID cookies
+
+    },function(error){
+        //error wiping the session data from the users prof
+        //TODO: expire the USER_ID and SESSION_ID cookies
+    })
+
+});
+
+*/
+
 // application -------------------------------------------------------------
 // https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular
 app.get('*', function(req, res) {
@@ -16,6 +55,7 @@ app.get('*', function(req, res) {
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/app/index.html'));
 });
+
 
 configRoutes(app);
 
