@@ -10,8 +10,8 @@ const usersDAL = DAL.usersDAL;
 router.post("/", (req, res) => {
 
     console.log("REQ BOD: ",req.body);
-   res.json(req.body); //debugging to make sure route is being hit
-
+   //debugging to make sure route is being hit
+   res.status(200).json(req.body);
     //get credentials from body
     authData.loginUser().then((sessionId) => {
         var session = {
