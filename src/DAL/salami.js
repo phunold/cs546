@@ -10,7 +10,7 @@ let  getCurrentSalami = function (){
                 console.log("Got today's salami!");
                 return currentSalami;
             }, (error) =>{
-                console.log("Unable to fetch today's salami!");
+                throw "Unable to fetch today's salami!";
             })
         })
     }
@@ -26,7 +26,7 @@ let exportedMethods = {
                     console.log("Created Salami!");
                     return id;
                 },(error) =>{
-                    console.log("Couldn't create salami!!");
+                    throw "Couldn't create salami!!";
                 })
         },(error)=>{
             throw error;
@@ -36,7 +36,7 @@ let exportedMethods = {
         return getCurrentSalami().then((currentSalami)=>{
             return currentSalami;
         }, (error)=>{
-            console.log("Unable to today's salami number");
+            throw "Unable to today's salami number";
         })
     },
     getSalami(){
@@ -44,7 +44,7 @@ let exportedMethods = {
         return getCurrentSalami().then((currentSalami)=>{
             return currentSalami.grandsalami;
         }, (error)=>{
-            console.log("Unable to today's salami number");
+            throw "Unable to today's salami number";
         })
 
     },
@@ -53,7 +53,7 @@ let exportedMethods = {
         return getCurrentSalami().then((currentSalami)=>{
             return currentSalami.finalscore;
         }, (error)=>{
-            console.log("Unable to fetch finalScore for the day");
+            throw "Unable to fetch finalScore for the day";
         })
     },
     getOverUnder(){
@@ -61,7 +61,7 @@ let exportedMethods = {
         return getCurrentSalami().then((currentSalami)=>{
             return currentSalami.over_under;
         }, (error) =>{
-            console.log("Unable to fetch over_under");
+           throw "Unable to fetch over_under";
         })
     }
 }
