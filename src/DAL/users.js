@@ -33,7 +33,7 @@ let exportedMethods = {
             console.log("Fetched all user documents!")
             return users;
         }, (error)=>{
-            console.log("Couldn't retrieve user documents!")
+            throw "Couldn't retrieve user documents!";
         })
     },
 
@@ -59,10 +59,10 @@ let exportedMethods = {
                     console.log("Created user!");
                     return id;
                 },(error)=>{
-                    console.log("Couldn't create user!");
+                    throw "Couldn't create user!";
                 })
             },(error)=>{
-                console.log("Couldn't retrieve user collection!");
+                throw "Couldn't retrieve user collection!";
             })
         }
         else{
@@ -80,10 +80,10 @@ let exportedMethods = {
                         console.log(user._id," is now in leagues ",user.league_ids);
                         return user;
                     },(error)=>{
-                        console.log("Unable to join league");
+                        throw "Unable to join league";
                     })
             },(error)=>{
-                console.log("Couldn't get user for the id");
+                throw "Couldn't get user for the id";
             })
         }
         else{
@@ -99,7 +99,7 @@ let exportedMethods = {
             console.log("Id found!");
             return user;
         },(error)=>{
-            console.log("Id not found!");
+            throw "Id not found!";
         })
     },
 
@@ -110,10 +110,10 @@ let exportedMethods = {
             console.log("Email found!");
             return user;
         },(error)=>{
-            console.log("Email not found!");
+            throw "Email not found!";
         })
     },
-    
+
     updateRecord(userId, result){
         //update a user's record with either win, loss, or draw
          return getUserByID(userId).then((user)=>{
@@ -130,10 +130,10 @@ let exportedMethods = {
                 console.log(user._id," records are now updated ",user.record);
                 return user;
             },(error)=>{
-                console.log("Unable to update record!");
+                throw "Unable to update record!";
             })
         },(error)=>{
-            console.log("Couldn't get user for the id!Unable to update record!!");
+            throw "Couldn't get user for the id!Unable to update record!!";
         })
     }
 }
