@@ -8,7 +8,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 let exportedMethods = {
     createWager(userid, timestamp, side){
-        //create a wager with given information for a specified user
+        //create a wager with given information
         return getUserByID(userid).then((user) =>{
              return wagerCollection().insert(
             {
