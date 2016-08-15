@@ -1,6 +1,7 @@
 const dbConnection = require("../config/mongoConnection");
 const DAL = require("../DAL/");
 const uuid = require('node-uuid');
+var bcrypt = require("bcrypt-nodejs");
 const salamiDAL = DAL.salamiDAL;
 const usersDAL = DAL.usersDAL;
 const wagersDAL = DAL.wagersDAL;
@@ -10,37 +11,51 @@ dbConnection().then(db => {
         return dbConnection;
         
     }).then((db) => {
-        return usersDAL.createUser("Troy","Koss","troykoss@gmail.com","password");
+        var pw1 = "password";
+        var hash1 = bcrypt.hashSync(pw1);
+        return usersDAL.createUser("Troy","Koss","troykoss@gmail.com",hash1);
     }).then((userid) => {
         return wagersDAL.createWager(userid, "Sat Aug 13 2016 11:38:31 GMT-0400 (Eastern Standard Time)", "over");
 
     }).then((res) => {
-        return usersDAL.createUser("Ryan","Anderson","ryananderson@gmail.com","password");
+        var pw2 = "password";
+        var hash2 = bcrypt.hashSync(pw2);
+        return usersDAL.createUser("Ryan","Anderson","ryananderson@gmail.com",hash2);
     }).then((userid) => {
         return wagersDAL.createWager(userid, "Mon Aug 08 2016 11:21:56 GMT-0400 (Eastern Standard Time)", "under");
 
     }).then((res) => {
-        return usersDAL.createUser("Brian","Kelly","briankelly@gmail.com","password");
+        var pw3 = "password";
+        var hash3 = bcrypt.hashSync(pw3);
+        return usersDAL.createUser("Brian","Kelly","briankelly@gmail.com",hash3);
     }).then((userid) => {
         return wagersDAL.createWager(userid, "Wed Aug 10 2016 11:21:56 GMT-0400 (Eastern Standard Time)", "over");
 
     }).then((res) => {
-        return usersDAL.createUser("Mike","Smith","mikesmith@gmail.com","password");
+        var pw4 = "password";
+        var hash4 = bcrypt.hashSync(pw4);
+        return usersDAL.createUser("Mike","Smith","mikesmith@gmail.com",hash4);
     }).then((userid) => {
         return wagersDAL.createWager(userid, "Fri Aug 12 2016 11:21:56 GMT-0400 (Eastern Standard Time)", "under");
 
     }).then((res) => {
-        return usersDAL.createUser("Steve","Leader","steveleader@gmail.com","password");
+        var pw5 = "password";
+        var hash5 = bcrypt.hashSync(pw5);
+        return usersDAL.createUser("Steve","Leader","steveleader@gmail.com",hash5);
     }).then((userid) => {
         return wagersDAL.createWager(userid, "Wed Aug 10 2016 11:21:56 GMT-0400 (Eastern Standard Time)", "over");
 
     }).then((res) => {
-        return usersDAL.createUser("Christine","Drucker","christinedrucker@gmail.com","password");
+        var pw6 = "password";
+        var hash6 = bcrypt.hashSync(pw6);
+        return usersDAL.createUser("Christine","Drucker","christinedrucker@gmail.com",hash6);
     }).then((userid) => {
         return wagersDAL.createWager(userid, "Mon Aug 08 2016 11:21:56 GMT-0400 (Eastern Standard Time)", "under");
 
     }).then((res) => {
-        return usersDAL.createUser("Helen","Clark","helenclark@gmail.com","password");
+        var pw7 = "password";
+        var hash7 = bcrypt.hashSync(pw7);
+        return usersDAL.createUser("Helen","Clark","helenclark@gmail.com",hash7);
     }).then((userid) => {
         return wagersDAL.createWager(userid, "Fri Aug 12 2016 11:21:56 GMT-0400 (Eastern Standard Time)", "over");
 
