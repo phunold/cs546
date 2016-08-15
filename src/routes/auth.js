@@ -12,8 +12,12 @@ router.post("/", (req, res) => {
    var email = req.body.email;
    var passwd = req.body.passwd;
     //get credentials from body
-    authData.loginUser(email, passwd).then((sessionId) => {
-        res.cookie("SESSION_ID", now.toString(), {});
+    authData.loginUser(email, passwd).then((response) => {
+        var expiresAt = new Date();
+        expiresAt.setHours(expiresAt.getHours() + 1);
+        res.cookie("SESSION_ID", response.SESSION_ID, {expires: expiresAt});
+        res.cookie("USER_ID", response.USER_ID, {expires: expiresAt});
+        res.json()
     }).catch((e) => {
         res.status(500).json({ error: e });
     });

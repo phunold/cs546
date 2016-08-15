@@ -130,7 +130,19 @@ let exportedMethods = {
             throw "Email not found!";
         })
     },
-
+    updateUserSession(userId, sessionId){
+        return getUserByID(userId).then((user)=>{
+            user.sessions.push(sessionId);
+            return userCollection.update(user).then((user)=>{
+                return true;
+            },(error)=>{
+                throw "Unable to join league";
+            });
+            
+        },(error)=>{
+            throw "Couldn't get user for the id!Unable to update record!!";
+        })
+    },
     updateRecord(userId, result){
         //update a user's record with either win, loss, or draw
          return getUserByID(userId).then((user)=>{

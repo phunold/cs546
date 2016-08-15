@@ -16,11 +16,16 @@ let exportedMethods = {
 						SESSION_ID : SESSION_ID,
 						USER_ID : user._id
 					};
+					return usersDAL.updateUserSession(user._id, SESSION_ID).then((success)=>{
+						return response;
+					},(error)=>{
+						throw "Cant update user session";
+					});
 					//Store cookie
 				}else{
 					//Incorrect password
+					throw "Invalid login. Please try again";
 				}
-				return response;
 			});
 		});
 	},
