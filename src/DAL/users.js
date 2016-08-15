@@ -6,12 +6,15 @@ const uuid = require('node-uuid');
 const ObjectId = require('mongodb').ObjectId; 
 
 let uniqueEmail = function(email){
-    return getUserByEmail(email).then((user)=>{
-        console.log("Email already in db. Unique check failed!", user);
-        return true;
+    return exportedMethods.getUserByEmail(email).then((user)=>{
+        if(user){
+            return false;
+        }else{
+            return true;
+        }
     },(error)=>{
-        console.log("Email not in db. Unique check passed!")
-        return false;
+        console.log("Email not in db. Unique check passed!",error);
+        throw error;
     })
 }
 
@@ -48,30 +51,34 @@ let exportedMethods = {
     createUser(fname,lname,email,password){
         //create a user with given values
         if(uniqueEmail(email)){
-            return userCollection().then((users)=>{
-                return users.insert({
-                    "fname": fname,
-                    "lname": lname,
-                    "email": email,
-                    "passwd": password,
-                    "balance": 0,
-                    "record": {
-                        "win": 0,
-                        "loss": 0,
-                        "draw": 0
-                        },
-                    "sessions" : [],
-                    "league_ids": []
-                }).then((response)=>{
-                    var id = response.ksjdflskdj.insertedId;
-                    console.log("Created user!");
-                    return id;
-                },(error)=>{
-                    throw "Couldn't create user!";
-                })
+            return userCollection().then((userColl)=>{
+                return userColl.insert({
+                        "fname": fname,
+                        "lname": lname,
+                        "email": email,
+                        "passwd": password,
+                        "balance": 0,
+                        "record": {
+                            "win": 0,
+                            "loss": 0,
+                            "draw": 0
+                            },
+                        "sessions" : [],
+                        "league_ids": []
+                    }).then((response)=>{
+                        if(response.insertedCount == 1){
+                            return response.ops[0]._id;
+                        }
+                        throw "Could not create user";                       
+                    },(error)=>{
+                        console.log(error);
+                        throw "Couldn't create user!";
+                    })
+
             },(error)=>{
-                throw "Couldn't retrieve user collection!";
-            })
+                console.log("WHOOOPS: ",error);
+                throw error;
+            });
         }
         else{
             console.log("User account already exists for this email!");
@@ -122,13 +129,20 @@ let exportedMethods = {
 
     getUserByEmail(userEmail){
         //get user by email
-        return userCollection().find({ "email" : userEmail }).then((user)=>{
-            //using find instead of findOne because email is unique
-            console.log("Email found!");
-            return user;
+        return userCollection().then((userColl)=>{
+            return userColl.findOne({ "email" : userEmail }).then((user)=>{
+                //using find instead of findOne because email is unique
+                
+                return user;
+            },(error)=>{
+                console.log(error);
+                throw "Email not found!";
+            });
         },(error)=>{
-            throw "Email not found!";
-        })
+            console.log("WHOOOPS: ",error);
+            throw error;
+        });
+       
     },
     updateUserSession(userId, sessionId){
         return getUserByID(userId).then((user)=>{

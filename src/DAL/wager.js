@@ -10,6 +10,8 @@ let exportedMethods = {
     createWager(userid, timestamp, side){
         //create a wager with given information
         return getUserByID(userid).then((user) =>{
+                    console.log("Really INSIDE:)");
+
              return wagerCollection().insert(
             {
                 "userid": userid,

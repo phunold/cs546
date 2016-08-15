@@ -4,7 +4,7 @@ const uuid = require('node-uuid');
 var bcrypt = require("bcrypt-nodejs");
 const salamiDAL = DAL.salamiDAL;
 const usersDAL = DAL.usersDAL;
-const wagersDAL = DAL.wagersDAL;
+const wagersDAL = DAL.wagerDAL;
 
 dbConnection().then(db => {
     return db.dropDatabase().then(() => {
@@ -13,9 +13,11 @@ dbConnection().then(db => {
     }).then((db) => {
         var pw1 = "password";
         var hash1 = bcrypt.hashSync(pw1);
+    
         return usersDAL.createUser("Troy","Koss","troykoss@gmail.com",hash1);
     }).then((userid) => {
-        return wagersDAL.createWager(userid, "Sat Aug 13 2016 11:38:31 GMT-0400 (Eastern Standard Time)", "over");
+
+        return wagersDAL.createWager(userid, new Date(), "over");
 
     }).then((res) => {
         var pw2 = "password";
@@ -77,7 +79,7 @@ dbConnection().then(db => {
     }).then(() => {
         //console.log("Done seeding database");
         db.close();
-    });
+    }).catch;
 }, (error) => {
     console.error(error);
 });
