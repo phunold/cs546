@@ -7,17 +7,22 @@ const usersDAL = DAL.usersDAL;
 let exportedMethods = {
 	
 	loginUser(email, password){
-		var user = usersDAL.getUserByEmail(email);
-		bcrypt.compare(password, user.passwd, function(err, res){
-			if(res === true){
-				//Successful authentication
-				var SESSION_ID = uuid.v1();
-				//Store cookie
-			}else{
-				//Incorrect password
-			}
+		return usersDAL.getUserByEmail(email).then((user)=>{
+			bcrypt.compare(password, user.passwd, function(err, res){
+				if(res === true){
+					//Successful authentication
+					var SESSION_ID = uuid.v1();
+					var response = {
+						SESSION_ID : SESSION_ID,
+						USER_ID : user._id
+					};
+					//Store cookie
+				}else{
+					//Incorrect password
+				}
+				return response;
+			});
 		});
-		return SESSION_ID;
 	},
 
 	terminateSession(sessionId, userId){
