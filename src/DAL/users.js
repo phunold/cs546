@@ -6,30 +6,36 @@ const uuid = require('node-uuid');
 const ObjectId = require('mongodb').ObjectId; 
 
 let uniqueEmail = function(email){
-    return getUserByEmail(email).then((user)=>{
+    return exportedMethods.getUserByEmail(email).then((user)=>{
         if(user){
             console.log("Email already found in db!");
             return false;
         }
-        console.log("Email unique!");
-        return true; 
+        else{
+            console.log("Email unique!");
+            return true;
+        } 
     },(error)=>{
         throw "Couldn't check if email is unique!";       
     })
 }
 
 let validateLeague = function(leagueId){
-    //leagueIds are unique
-    return leagueCollection.find(leagueId).then((leagueRecord)=>{
+    return leagueCollection().then((leagueColl)=>{
+        console.log("LeagueColl", leagueColl)
+        leagueColl.find(leagueId).then((leagueRecord)=>{
         if(leagueRecord){
             console.log("League ID is valid!", leagueRecord)
             return true;
         }
         console.log("League ID invalid!");
         return false;
-    }, (error)=>{
-        throw "Couldn't check if league ID is valid!";     
-    })  
+        }, (error)=>{
+            throw "Couldn't check if league ID is valid!";      
+        }) 
+    },(error)=>{
+        throw "League collection couldn't be retrieved!"
+    })
 }
 
 let exportedMethods = {
@@ -54,7 +60,6 @@ let exportedMethods = {
     },
 
     createUser(fname,lname,email,password){
-        //create a user with given values
         if(uniqueEmail(email)){
             return userCollection().then((users)=>{
                 return users.insert({
@@ -71,7 +76,7 @@ let exportedMethods = {
                     "sessions" : [],
                     "league_ids": []
                 }).then((response)=>{
-                    var id = response.ksjdflskdj.insertedId;
+                    var id = response.insertedIds[0];
                     console.log("Created user!");
                     return id;
                 },(error)=>{
@@ -119,9 +124,8 @@ let exportedMethods = {
     },
 
     getUserByID(userId){
-        //get user by ID
         return userCollection().then((userColl)=>{
-            userColl.findOne({ "_id" : userCollection }).then((user)=>{ 
+            userColl.findOne({ "_id" : userId }).then((user)=>{ 
                 console.log("Id found!");
                 return user;
             },(error)=>{
@@ -133,16 +137,17 @@ let exportedMethods = {
     },
 
     getUserByEmail(userEmail){
-        //get user by email
         return userCollection().then((userColl)=>{
             userColl.findOne({ "email" : userEmail }).then((user)=>{
-                console.log("Email found!");
-                return user;
-            },(error)=>{
-                throw "Email not found!";
+                if (user)
+                {   console.log("Email found!");
+                    return user;
+                }
+                console.log("Email not found!");
+                return null;
+            }, (error)=>{
+                throw "ERROR:Getting User by Email";
             })
-        }, (error)=>{
-            throw "ERROR:Getting User by Email";
         })
     },
     updateUserSession(userId, sessionId){
