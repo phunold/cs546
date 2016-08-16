@@ -7,22 +7,28 @@ const ObjectId = require('mongodb').ObjectId;
 
 let uniqueEmail = function(email){
     return getUserByEmail(email).then((user)=>{
-        console.log("Email already in db. Unique check failed!", user);
-        return true;
+        if(user){
+            console.log("Email already found in db!");
+            return false;
+        }
+        console.log("Email unique!");
+        return true; 
     },(error)=>{
-        console.log("Email not in db. Unique check passed!")
-        return false;
+        throw "Couldn't check if email is unique!";       
     })
 }
 
 let validateLeague = function(leagueId){
     //leagueIds are unique
     return leagueCollection.find(leagueId).then((leagueRecord)=>{
-        console.log("League validation passed!", leagueRecord)
-        return true;
-    }, (error)=>{
-        console.log("League validation failed!");
+        if(leagueRecord){
+            console.log("League ID is valid!", leagueRecord)
+            return true;
+        }
+        console.log("League ID invalid!");
         return false;
+    }, (error)=>{
+        throw "Couldn't check if league ID is valid!";     
     })  
 }
 
@@ -38,11 +44,13 @@ let exportedMethods = {
     },
 
     getTopUsers(){
-        return userCollection().find().sort({"record.win": -1}).limit(15).then((topUsers) =>{
-            return topUsers;    
-        }, (error)=>{
-            throw "Couldn't retrieve top users!";
-        }) 
+        return userCollection().then((userColl)=>{
+            userColl.find().sort({"record.win": -1}).limit(15).then((topUsers) =>{
+                return topUsers;    
+            }, (error)=>{
+                throw "Couldn't retrieve top users!";
+            }) 
+        })
     },
 
     createUser(fname,lname,email,password){
@@ -94,40 +102,47 @@ let exportedMethods = {
                 throw "Couldn't get user for the id";
             })
         }
-        else{
-            console.log("Couldn't get league for the id");
-        }
         return null;
     },
 
     getUsersByLeague(leagueId){
-        return userCollection().find({"league_ids": leagueId}).then((users)=>{
-            console.log("Found users by league id!");
-            return users;
+        return userCollection().then((userColl)=>{
+            userColl.findOne({"league_ids": leagueId}).then((users)=>{
+                console.log("Found users by league id!");
+                return users;
+            },(error)=>{
+                throw "Cannot find users by league id!";
+            })
         },(error)=>{
-            throw "Cannot find users by league id!";
+            throw "ERROR:Getting user by league";
         })
     },
 
     getUserByID(userId){
         //get user by ID
-        return userCollection().find({ "_id" : userCollection }).then((user)=>{ 
-            //using find instead of findOne because _id is unique
-            console.log("Id found!");
-            return user;
+        return userCollection().then((userColl)=>{
+            userColl.findOne({ "_id" : userCollection }).then((user)=>{ 
+                console.log("Id found!");
+                return user;
+            },(error)=>{
+                throw "Id not found!";
+            })
         },(error)=>{
-            throw "Id not found!";
+            throw "ERROR:Getting user by ID";
         })
     },
 
     getUserByEmail(userEmail){
         //get user by email
-        return userCollection().find({ "email" : userEmail }).then((user)=>{
-            //using find instead of findOne because email is unique
-            console.log("Email found!");
-            return user;
-        },(error)=>{
-            throw "Email not found!";
+        return userCollection().then((userColl)=>{
+            userColl.findOne({ "email" : userEmail }).then((user)=>{
+                console.log("Email found!");
+                return user;
+            },(error)=>{
+                throw "Email not found!";
+            })
+        }, (error)=>{
+            throw "ERROR:Getting User by Email";
         })
     },
     updateUserSession(userId, sessionId){
