@@ -11,8 +11,8 @@ dbConnection().then(db => {
         return dbConnection;
         
     }).then((db) => {
-        var pw1 = "password";
-        var hash1 = bcrypt.hashSync(pw1);
+        var pw1 = "pass";
+        var hash1 = bcrypt.hashSync("pass");
         return usersDAL.createUser("Troy","Koss","troykoss@gmail.com",hash1);
     }).then((userid) => {
         return wagersDAL.createWager(userid, "Sat Aug 13 2016 11:38:31 GMT-0400 (Eastern Standard Time)", "over");

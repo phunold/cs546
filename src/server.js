@@ -9,9 +9,9 @@ app.use(express.static(__dirname + '/app'));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-const DAL = require("/DAL");
+const DAL = require("./DAL");
 const usersDAL = DAL.usersDAL;
-const Data = require("/data");
+const Data = require("./data");
 const authData = Data.authData;
 //Middlewares:
 

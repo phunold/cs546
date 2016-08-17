@@ -4,7 +4,7 @@ const salamiRoutes = require("./salami");
 const wagerRoutes = require("./wager");
 
 const constructorMethod = (app) => {
-    app.use("/api/authenticate/", authRoutes);
+    app.use("/authenticate/", authRoutes);
     app.use("/api/users/", usersRoutes);
     app.use("/api/salami/", salamiRoutes);
     app.use("/api/wager/", wagerRoutes);

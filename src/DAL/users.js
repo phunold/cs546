@@ -138,9 +138,10 @@ let exportedMethods = {
 
     getUserByEmail(userEmail){
         return userCollection().then((userColl)=>{
-            userColl.findOne({ "email" : userEmail }).then((user)=>{
+            return userColl.findOne({ "email" : userEmail }).then((user)=>{
                 if (user)
-                {   console.log("Email found!");
+                {   
+                    console.log("Email found!!!");
                     return user;
                 }
                 console.log("Email not found!");

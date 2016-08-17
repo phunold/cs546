@@ -8,25 +8,14 @@ let exportedMethods = {
 	
 	loginUser(email, password){
 		return usersDAL.getUserByEmail(email).then((user)=>{
-			bcrypt.compare(password, user.passwd, function(err, res){
-				if(res === true){
-					//Successful authentication
-					var SESSION_ID = uuid.v1();
-					var response = {
-						SESSION_ID : SESSION_ID,
-						USER_ID : user._id
-					};
-					return usersDAL.updateUserSession(user._id, SESSION_ID).then((success)=>{
-						return response;
-					},(error)=>{
-						throw "Cant update user session";
-					});
-					//Store cookie
-				}else{
-					//Incorrect password
-					throw "Invalid login. Please try again";
-				}
-			});
+			if(!user){
+				throw {message: "Unable to find user."}
+			}
+			console.log("COMPARING: "+password+"  -   "+ user.passwd);
+			//TODO: FIGURE THIS OUT!!!!!!!!!!!!!!!!!! ALWAYS FAILING
+			return bcrypt.compare(password, user.passwd,bcryptCallback() );
+		},(error)=>{
+			throw "Unable to find user. "+error;
 		});
 	},
 
@@ -35,3 +24,52 @@ let exportedMethods = {
 		//Remove cookies
 	}
 }
+function bcryptCallback(err, res){
+	if(res === true){
+		console.log("successful bcrypt");
+		//Successful authentication
+		var SESSION_ID = uuid.v1();
+		var response = {
+			SESSION_ID : SESSION_ID,
+			USER_ID : user._id
+		};
+		return usersDAL.updateUserSession(user._id, SESSION_ID).then((success)=>{
+			return response;
+		},(error)=>{
+			throw "Cant update user session";
+		});
+		//Store cookie
+	}else{
+		console.log("unsuccessful bcrypt"+res);
+		//Incorrect password
+		var error = {
+			message: "Invalid Login. Please Try Again"
+		}
+		throw error;
+	}
+}
+module.exports = exportedMethods;
+
+
+			/* syncronous - bad.  Keep this code
+			var success = bcrypt.compareSync(password,user.passwd);
+			if(success === true){
+				console.log("successful bcrypt");
+				//Successful authentication
+				var SESSION_ID = uuid.v1();
+				var response = {
+					SESSION_ID : SESSION_ID,
+					USER_ID : user._id
+				};
+				return usersDAL.updateUserSession(user._id, SESSION_ID).then((success)=>{
+					return response;
+				},(error)=>{
+					throw "Cant update user session";
+				});
+				//Store cookie
+			}else{
+				console.log("unsuccessful bcrypt");
+				//Incorrect password
+				throw "Invalid login. Please try again :(";
+			}
+			*/

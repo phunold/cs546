@@ -37,12 +37,12 @@
             */
             //Use this for real authentication
              //----------------------------------------------
-            return $http.post('/api/authenticate', { email: email, password: pass }).then(
+            return $http.post('/authenticate', { email: email, password: pass }).then(
                 function(response){
                     console.log(response);
                     return response.data.session.id; //TODO: figure out what returns;
                 },function(error){
-                    throw error;
+                    throw error.data.error;
                 });
         }
 
