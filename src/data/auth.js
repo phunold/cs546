@@ -13,7 +13,31 @@ let exportedMethods = {
 			}
 			console.log("COMPARING: "+password+"  -   "+ user.passwd);
 			//TODO: FIGURE THIS OUT!!!!!!!!!!!!!!!!!! ALWAYS FAILING
-			return bcrypt.compare(password, user.passwd,bcryptCallback() );
+			return bcrypt.compare(password, user.passwd, function(err, res){
+				if(res === true){
+					console.log("successful bcrypt");
+					//Successful authentication
+					var SESSION_ID = uuid.v1();
+					var response = {
+						SESSION_ID : SESSION_ID,
+						USER_ID : user._id
+					};
+					console.log(response);
+					return usersDAL.updateUserSession(response.USER_ID, response.SESSION_ID).then((success)=>{
+						return response;
+					},(error)=>{
+						throw "Cant update user session";
+					});
+					//Store cookie
+				}else{
+					console.log("unsuccessful bcrypt"+res);
+					//Incorrect password
+					var error = {
+						message: "Invalid Login. Please Try Again"
+					}
+					throw error;
+				}
+			});
 		},(error)=>{
 			throw "Unable to find user. "+error;
 		});

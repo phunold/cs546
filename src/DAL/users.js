@@ -95,7 +95,7 @@ let exportedMethods = {
     joinLeague(userId, leagueId){
         //join a specified league with given user
         if(validateLeague(leagueId)){
-                return getUserByID(userId).then((user)=>{
+                return exportedMethods.getUserByID(userId).then((user)=>{
                     user.league_ids.push(leagueId);
                     return userCollection.update(user).then((user)=>{
                         console.log(user._id," is now in leagues ",user.league_ids);
@@ -152,7 +152,7 @@ let exportedMethods = {
         })
     },
     updateUserSession(userId, sessionId){
-        return getUserByID(userId).then((user)=>{
+        return exportedMethods.getUserByID(userId).then((user)=>{
             user.sessions.push(sessionId);
             return userCollection.update(user).then((user)=>{
                 return true;
@@ -166,7 +166,7 @@ let exportedMethods = {
     },
     updateRecord(userId, result){
         //update a user's record with either win, loss, or draw
-         return getUserByID(userId).then((user)=>{
+         return exportedMethods.getUserByID(userId).then((user)=>{
             return userCollection.update(
                 {"_id": user.id},
                 {
