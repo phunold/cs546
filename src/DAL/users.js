@@ -71,7 +71,6 @@ let exportedMethods = {
 
     createUser(fname,lname,email,password){
         if(uniqueEmail(email)){
-<<<<<<< HEAD
             return userCollection().then((userColl)=>{
                 return userColl.insert({
                         "fname": fname,
@@ -95,30 +94,6 @@ let exportedMethods = {
                         console.log(error);
                         throw "Couldn't create user!";
                     })
-
-=======
-            return userCollection().then((users)=>{
-                return users.insert({
-                    "fname": fname,
-                    "lname": lname,
-                    "email": email,
-                    "passwd": password,
-                    "balance": 0,
-                    "record": {
-                        "win": 0,
-                        "loss": 0,
-                        "draw": 0
-                        },
-                    "sessions" : [],
-                    "league_ids": []
-                }).then((response)=>{
-                    var id = response.insertedIds[0];
-                    console.log("Created user!");
-                    return id;
-                },(error)=>{
-                    throw "Couldn't create user!";
-                })
->>>>>>> 727da98784e37a83b58450c1dda7e16152a94fae
             },(error)=>{
                 console.log("WHOOOPS: ",error);
                 throw error;
@@ -175,23 +150,7 @@ let exportedMethods = {
     },
 
     getUserByEmail(userEmail){
-<<<<<<< HEAD
-        //get user by email
-        return userCollection().then((userColl)=>{
-            return userColl.findOne({ "email" : userEmail }).then((user)=>{
-                //using find instead of findOne because email is unique
-                
-                return user;
-            },(error)=>{
-                console.log(error);
-                throw "Email not found!";
-            });
-        },(error)=>{
-            console.log("WHOOOPS: ",error);
-            throw error;
-        });
-       
-=======
+
         return userCollection().then((userColl)=>{
             userColl.findOne({ "email" : userEmail }).then((user)=>{
                 if (user)
@@ -204,7 +163,6 @@ let exportedMethods = {
                 throw "ERROR:Getting User by Email";
             })
         })
->>>>>>> 727da98784e37a83b58450c1dda7e16152a94fae
     },
     updateUserSession(userId, sessionId){
         return getUserByID(userId).then((user)=>{
