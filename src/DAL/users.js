@@ -8,6 +8,7 @@ const ObjectId = require('mongodb').ObjectId;
 let uniqueEmail = function(email){
     return exportedMethods.getUserByEmail(email).then((user)=>{
         if(user){
+<<<<<<< HEAD
             return false;
         }else{
             return true;
@@ -15,18 +16,36 @@ let uniqueEmail = function(email){
     },(error)=>{
         console.log("Email not in db. Unique check passed!",error);
         throw error;
+=======
+            console.log("Email already found in db!");
+            return false;
+        }
+        else{
+            console.log("Email unique!");
+            return true;
+        } 
+    },(error)=>{
+        throw "Couldn't check if email is unique!";       
+>>>>>>> 727da98784e37a83b58450c1dda7e16152a94fae
     })
 }
 
 let validateLeague = function(leagueId){
-    //leagueIds are unique
-    return leagueCollection.find(leagueId).then((leagueRecord)=>{
-        console.log("League validation passed!", leagueRecord)
-        return true;
-    }, (error)=>{
-        console.log("League validation failed!");
+    return leagueCollection().then((leagueColl)=>{
+        console.log("LeagueColl", leagueColl)
+        leagueColl.find(leagueId).then((leagueRecord)=>{
+        if(leagueRecord){
+            console.log("League ID is valid!", leagueRecord)
+            return true;
+        }
+        console.log("League ID invalid!");
         return false;
-    })  
+        }, (error)=>{
+            throw "Couldn't check if league ID is valid!";      
+        }) 
+    },(error)=>{
+        throw "League collection couldn't be retrieved!"
+    })
 }
 
 let exportedMethods = {
@@ -41,16 +60,18 @@ let exportedMethods = {
     },
 
     getTopUsers(){
-        return userCollection().find().sort({"record.win": -1}).limit(15).then((topUsers) =>{
-            return topUsers;    
-        }, (error)=>{
-            throw "Couldn't retrieve top users!";
-        }) 
+        return userCollection().then((userColl)=>{
+            userColl.find().sort({"record.win": -1}).limit(15).then((topUsers) =>{
+                return topUsers;    
+            }, (error)=>{
+                throw "Couldn't retrieve top users!";
+            }) 
+        })
     },
 
     createUser(fname,lname,email,password){
-        //create a user with given values
         if(uniqueEmail(email)){
+<<<<<<< HEAD
             return userCollection().then((userColl)=>{
                 return userColl.insert({
                         "fname": fname,
@@ -75,6 +96,29 @@ let exportedMethods = {
                         throw "Couldn't create user!";
                     })
 
+=======
+            return userCollection().then((users)=>{
+                return users.insert({
+                    "fname": fname,
+                    "lname": lname,
+                    "email": email,
+                    "passwd": password,
+                    "balance": 0,
+                    "record": {
+                        "win": 0,
+                        "loss": 0,
+                        "draw": 0
+                        },
+                    "sessions" : [],
+                    "league_ids": []
+                }).then((response)=>{
+                    var id = response.insertedIds[0];
+                    console.log("Created user!");
+                    return id;
+                },(error)=>{
+                    throw "Couldn't create user!";
+                })
+>>>>>>> 727da98784e37a83b58450c1dda7e16152a94fae
             },(error)=>{
                 console.log("WHOOOPS: ",error);
                 throw error;
@@ -101,33 +145,37 @@ let exportedMethods = {
                 throw "Couldn't get user for the id";
             })
         }
-        else{
-            console.log("Couldn't get league for the id");
-        }
         return null;
     },
 
     getUsersByLeague(leagueId){
-        return userCollection().find({"league_ids": leagueId}).then((users)=>{
-            console.log("Found users by league id!");
-            return users;
+        return userCollection().then((userColl)=>{
+            userColl.findOne({"league_ids": leagueId}).then((users)=>{
+                console.log("Found users by league id!");
+                return users;
+            },(error)=>{
+                throw "Cannot find users by league id!";
+            })
         },(error)=>{
-            throw "Cannot find users by league id!";
+            throw "ERROR:Getting user by league";
         })
     },
 
     getUserByID(userId){
-        //get user by ID
-        return userCollection().find({ "_id" : userCollection }).then((user)=>{ 
-            //using find instead of findOne because _id is unique
-            console.log("Id found!");
-            return user;
+        return userCollection().then((userColl)=>{
+            userColl.findOne({ "_id" : userId }).then((user)=>{ 
+                console.log("Id found!");
+                return user;
+            },(error)=>{
+                throw "Id not found!";
+            })
         },(error)=>{
-            throw "Id not found!";
+            throw "ERROR:Getting user by ID";
         })
     },
 
     getUserByEmail(userEmail){
+<<<<<<< HEAD
         //get user by email
         return userCollection().then((userColl)=>{
             return userColl.findOne({ "email" : userEmail }).then((user)=>{
@@ -143,6 +191,20 @@ let exportedMethods = {
             throw error;
         });
        
+=======
+        return userCollection().then((userColl)=>{
+            userColl.findOne({ "email" : userEmail }).then((user)=>{
+                if (user)
+                {   console.log("Email found!");
+                    return user;
+                }
+                console.log("Email not found!");
+                return null;
+            }, (error)=>{
+                throw "ERROR:Getting User by Email";
+            })
+        })
+>>>>>>> 727da98784e37a83b58450c1dda7e16152a94fae
     },
     updateUserSession(userId, sessionId){
         return getUserByID(userId).then((user)=>{
