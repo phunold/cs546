@@ -8,7 +8,6 @@ const ObjectId = require('mongodb').ObjectId;
 let uniqueEmail = function(email){
     return exportedMethods.getUserByEmail(email).then((user)=>{
         if(user){
-<<<<<<< HEAD
             return false;
         }else{
             return true;
@@ -16,17 +15,6 @@ let uniqueEmail = function(email){
     },(error)=>{
         console.log("Email not in db. Unique check passed!",error);
         throw error;
-=======
-            console.log("Email already found in db!");
-            return false;
-        }
-        else{
-            console.log("Email unique!");
-            return true;
-        } 
-    },(error)=>{
-        throw "Couldn't check if email is unique!";       
->>>>>>> 727da98784e37a83b58450c1dda7e16152a94fae
     })
 }
 
