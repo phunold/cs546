@@ -39,7 +39,8 @@ app.use("/logout", function(request, response, next){
 	response.clearCookie("USER_ID");
     },function(error){
         //error wiping the session data from the users prof
-
+    response.clearCookie("SESSION_ID");
+	response.clearCookie("USER_ID");
         //TODO: expire the USER_ID and SESSION_ID cookies
     })
 

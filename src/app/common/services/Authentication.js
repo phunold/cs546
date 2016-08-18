@@ -10,6 +10,7 @@
         var service = {};
 
         service.Login = Login;
+        service.Logout = Logout;
         service.StoreUserData = StoreUserData;
         service.RemoveUserData = RemoveUserData;
 
