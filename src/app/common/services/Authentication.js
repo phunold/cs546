@@ -28,6 +28,16 @@
                 });
         }
 
+        function Logout(){
+            return $http.get('/logout').then(
+                function(response){
+                    console.log(response);
+                    return response.data;
+                },function(error){
+                    throw error.data.error;
+                });
+        }
+
         function StoreUserData(email, sessionId) {
             //make a secret token
 
