@@ -3,9 +3,11 @@ const userCollection = mongoCollections.users;
 const wagerCollection = mongoCollections.wagers;
 const leagueCollection = mongoCollections.leagues;
 const uuid = require('node-uuid');
+var bcrypt = require("bcrypt-nodejs");
 const ObjectId = require('mongodb').ObjectId; 
 
 let uniqueEmail = function(email){
+    
     return exportedMethods.getUserByEmail(email).then((user)=>{
         if(user){
             console.log("Email already found in db!");
@@ -58,38 +60,46 @@ let exportedMethods = {
             }) 
         })
     },
-
     createUser(fname,lname,email,password){
-        if(uniqueEmail(email)){
-            return userCollection().then((users)=>{
-                return users.insert({
-                    "fname": fname,
-                    "lname": lname,
-                    "email": email,
-                    "passwd": password,
-                    "balance": 0,
-                    "record": {
-                        "win": 0,
-                        "loss": 0,
-                        "draw": 0
-                        },
-                    "sessions" : [],
-                    "league_ids": []
-                }).then((response)=>{
-                    var id = response.insertedIds[0];
-                    console.log("Created user!");
-                    return id;
+        return uniqueEmail(email).then((uniqueEmail)=>{
+            if(uniqueEmail){
+                return userCollection().then((users)=>{
+                    return users.insert({
+                        "fname": fname,
+                        "lname": lname,
+                        "email": email,
+                        "passwd": bcrypt.hashSync(password),
+                        "balance": 0,
+                        "record": {
+                            "win": 0,
+                            "loss": 0,
+                            "draw": 0
+                            },
+                        "sessions" : [],
+                        "league_ids": []
+                    }).then((response)=>{
+                        if(response.insertedCount === 1){
+                            var id = response.ops[0]._id;
+                            console.log("Created user!",id);
+                            return id;
+                        }else{
+                            throw "Could not create user!";
+                        }
+                    },(error)=>{
+                        console.log(error);
+                        throw "Couldn't create user!";
+                    })
                 },(error)=>{
-                    throw "Couldn't create user!";
+                    throw "Couldn't retrieve user collection!";
                 })
-            },(error)=>{
-                throw "Couldn't retrieve user collection!";
-            })
-        }
-        else{
-            console.log("User account already exists for this email!");
-        }
-       return null;
+            }
+            else{
+                throw "User account already exists for this email!";
+            }
+        },(error)=>{
+            throw error;
+        });
+
     },
 
     joinLeague(userId, leagueId){
@@ -125,9 +135,12 @@ let exportedMethods = {
 
     getUserByID(userId){
         return userCollection().then((userColl)=>{
-            userColl.findOne({ "_id" : userId }).then((user)=>{ 
-                console.log("Id found!");
-                return user;
+            return userColl.findOne({ "_id" : userId }).then((user)=>{ 
+                if(user){
+                    return user;
+                }else{
+                    throw "User not found";
+                }
             },(error)=>{
                 throw "Id not found!";
             })
@@ -154,8 +167,19 @@ let exportedMethods = {
     updateUserSession(userId, sessionId){
         return exportedMethods.getUserByID(userId).then((user)=>{
             user.sessions.push(sessionId);
-            return userCollection.update(user).then((user)=>{
-                return true;
+            return userCollection().then((userColl)=>{
+                return userColl.update({"_id":user._id},user).then((updateResponse)=>{
+                    if(updateResponse.result.nModified ===1){
+                        return {
+                            USER_ID: user._id.toString(),
+                            SESSION_ID: sessionId    
+                        };
+                    }else{
+                        throw "Nothing updated.";
+                    }
+                },(error)=>{
+                    throw error;
+                });
             },(error)=>{
                 throw "Unable to join league";
             });

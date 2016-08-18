@@ -32,7 +32,7 @@ app.use("/api*",function(request,response,next){
     });
 });
 
-app.use("/api/logout", function(request, response, next){
+app.use("/logout", function(request, response, next){
     
     authData.terminateSession().then(function(){
         //TODO: expire the USER_ID and SESSION_ID cookies

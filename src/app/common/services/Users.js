@@ -5,12 +5,10 @@
         .module('app')
         .factory('UserService', UserService);
 
-    UserService.$inject = ['$timeout', '$filter', '$q'];
-    function UserService($timeout, $filter, $q) {
-
+    UserService.$inject = ['$http'];
+    function UserService($http) {
         var service = {};
 
-        service.GetAll = GetAll;
         service.GetById = GetById;
         service.GetByEmail = GetByEmail;
         service.Create = Create;
@@ -19,101 +17,52 @@
 
         return service;
 
-        function GetAll() {
-            var deferred = $q.defer();
-            deferred.resolve(getUsers());
-            return deferred.promise;
-        }
 
         function GetById(id) {
-            var deferred = $q.defer();
-            var filtered = $filter('filter')(getUsers(), { id: id });
-            var user = filtered.length ? filtered[0] : null;
-            deferred.resolve(user);
-            return deferred.promise;
+            return $http.get('/api/users/id/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
         function GetByEmail(email) {
-            var deferred = $q.defer();
-            var filtered = $filter('filter')(getUsers(), { email: email });
-            var user = filtered.length ? filtered[0] : null;
-            deferred.resolve(user);
-            return deferred.promise;
+            return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
         }
 
+        function GetTopRecordHolders(){
+            //returns json obj with array of user objects. 
+            //User objects will be filtered down to just have name and record (no password, balance, etc for security)
+            return $http.get('/api/users/top/').then(handleSuccess, handleError('Error getting user by id'));
+
+        }
+        function GetUsersByLeague(leagueId){
+            return $http.get('/api/users/league/'+ leagueId).then(handleSuccess, handleError('Error getting user by league'));
+
+        }
         function Create(user) {
-            var deferred = $q.defer();
-
-            // simulate api call with $timeout
-            $timeout(function () {
-                GetByEmail(user.email)
-                    .then(function (duplicateUser) {
-                        if (duplicateUser !== null) {
-                            deferred.reject('Email "' + user.email + '" is already taken');
-                        } else {
-                            var users = getUsers();
-
-                            // assign id
-                            var lastUser = users[users.length - 1] || { id: 0 };
-                            user.id = lastUser.id + 1;
-
-                            // save to local storage
-                            users.push(user);
-                            setUsers(users);
-
-                            deferred.resolve(true);
-                        }
-                    });
-            }, 1000);
-
-            return deferred.promise;
+            return $http.post('/users', user).then(function(success){
+                console.log(success.data.result);
+            },function(error){
+                throw error.data.error;
+            });
         }
 
         function Update(user) {
-            var deferred = $q.defer();
-
-            var users = getUsers();
-            for (var i = 0; i < users.length; i++) {
-                if (users[i].id === user.id) {
-                    users[i] = user;
-                    break;
-                }
-            }
-            setUsers(users);
-            deferred.resolve();
-
-            return deferred.promise;
+            return $http.put('/api/users/' + user.id, user).then(handleSuccess, handleError('Error updating user'));
         }
 
         function Delete(id) {
-            var deferred = $q.defer();
-
-            var users = getUsers();
-            for (var i = 0; i < users.length; i++) {
-                var user = users[i];
-                if (user.id === id) {
-                    users.splice(i, 1);
-                    break;
-                }
-            }
-            setUsers(users);
-            deferred.resolve();
-
-            return deferred.promise;
+            return $http.delete('/api/users/' + id).then(handleSuccess, handleError('Error deleting user'));
         }
 
         // private functions
 
-        function getUsers() {
-            if(!localStorage.users){
-                localStorage.users = JSON.stringify([]);
-            }
-
-            return JSON.parse(localStorage.users);
+        function handleSuccess(res) {
+            return res.data;
         }
 
-        function setUsers(users) {
-            localStorage.users = JSON.stringify(users);
+        function handleError(error) {
+            return function () {
+                return { success: false, message: error };
+            };
         }
     }
+
 })();

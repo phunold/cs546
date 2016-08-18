@@ -18,29 +18,11 @@
         function Login(email, pass) {
             
             var deferred = $q.defer();
-            /* Dummy authentication for testing, uses $timeout to simulate api call
-             ----------------------------------------------
-            $timeout(function () {
-                var response;
-                UserService.GetByEmail(email)
-                    .then(function (user) {
-                        if (user !== null && user.password === pass) {
-                            deferred.resolve("sessionid-tok");
-                        } else {
-                            deferred.reject('Email or password is incorrect');
-                        }
-                    });
-                   
-            }, 1000);
-            return deferred.promise;
-
-            */
-            //Use this for real authentication
-             //----------------------------------------------
+            
             return $http.post('/authenticate', { email: email, password: pass }).then(
                 function(response){
                     console.log(response);
-                    return response.data.session.id; //TODO: figure out what returns;
+                    return response.data;
                 },function(error){
                     throw error.data.error;
                 });
