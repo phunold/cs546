@@ -51,8 +51,20 @@ let exportedMethods = {
 	},
 
 	terminateSession(sessionId, userId){
-		var user = usersDAL.getUserByID(userId);
-
+		console.log("terminateSession");
+		return usersDAL.getUserByID(userId).then((user)=>{
+			console.log(user);
+			if(!user){
+				throw {message: "Unable to find user."};
+			}
+			return usersDAL.removeUserSession(user._id, sessionId).then((response)=>{
+				return response;
+			},(error)=>{
+				throw "Cant update user session";
+			});
+		},(error)=>{
+			throw "Unable to find user. "+error;
+		});
 	}
 }
 

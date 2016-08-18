@@ -17,15 +17,15 @@ const authData = Data.authData;
 
 app.use("/api*",function(request,response,next){
     //check if the user has a sessionid
-    
-    var userId = request.cookie.USER_ID;
+    var userId = request.cookies.USER_ID;
     usersDAL.getUserByID(userId).then(function(user){
-        var sessionId = request.cookie.SESSION_ID;
+        var sessionId = request.cookies.SESSION_ID;
         var sessionArray = user.sessions;
         if(sessionArray.indexOf(sessionId) == -1){
             response.status(401).send("Unauthorized Access Attempt. Session invalid");
         }else{
             next();
+	    console.log("Success");
         }
     },function(error){
         response.status(500).send("Unauthorized Access Attempt. Session invalid");
@@ -33,12 +33,13 @@ app.use("/api*",function(request,response,next){
 });
 
 app.use("/logout", function(request, response, next){
-    
-    authData.terminateSession().then(function(){
+    authData.terminateSession(request.cookies.SESSION_ID, request.cookies.USER_ID).then(function(){
         //TODO: expire the USER_ID and SESSION_ID cookies
-
+	response.clearCookie("SESSION_ID");
+	response.clearCookie("USER_ID");
     },function(error){
         //error wiping the session data from the users prof
+
         //TODO: expire the USER_ID and SESSION_ID cookies
     })
 

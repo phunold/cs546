@@ -135,7 +135,7 @@ let exportedMethods = {
 
     getUserByID(userId){
         return userCollection().then((userColl)=>{
-            return userColl.findOne({ "_id" : userId }).then((user)=>{ 
+            return userColl.findOne({ "_id" : ObjectId(userId) }).then((user)=>{
                 if(user){
                     return user;
                 }else{
@@ -174,6 +174,29 @@ let exportedMethods = {
                             USER_ID: user._id.toString(),
                             SESSION_ID: sessionId    
                         };
+                    }else{
+                        throw "Nothing updated.";
+                    }
+                },(error)=>{
+                    throw error;
+                });
+            },(error)=>{
+                throw "Unable to join league";
+            });
+            
+        },(error)=>{
+            throw "Couldn't get user for the id!Unable to update record!!";
+        })
+    },
+    removeUserSession(userId, sessionId){
+	console.log("Removing:"+userId+" "+sessionId);
+        return exportedMethods.getUserByID(userId).then((user)=>{
+	    var index = user.sessions.indexOf(sessionId);
+            user.sessions.splice(index, 1);
+            return userCollection().then((userColl)=>{
+                return userColl.update({"_id":user._id},user).then((updateResponse)=>{
+                    if(updateResponse.result.nModified ===1){
+                        return true;
                     }else{
                         throw "Nothing updated.";
                     }
