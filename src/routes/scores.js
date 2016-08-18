@@ -5,14 +5,19 @@ const scoresDAL = DAL.scoresDAL;
 
 router.get("/", (req, res) => { 
 
-	scoresDAL.getScores().catch((e) => {
+	scoresDAL.getScores().then(()=>{
+		
+	}).catch((e) => {
 
 	});
 });
 
 router.post("/", (req, res) => {
 	
-	scoresDAL.updateScores().catch((e) => {
+	scoresDAL.updateScores().then(()=>{
+	
+
+	}).catch((e) => {
 
 	});
 });

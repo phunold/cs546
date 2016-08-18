@@ -23,5 +23,6 @@ module.exports = {
     grandsalami : getCollectionFn("grandsalami"),
     users: getCollectionFn("users"),
     wagers: getCollectionFn("wagers"),
-    leagues: getCollectionFn("leagues")
+    leagues: getCollectionFn("leagues"),
+    scores: getCollectionFn("scores")
 };
