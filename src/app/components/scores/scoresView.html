@@ -1,14 +1,14 @@
 <div class="panel panel-default col-sm-3" ng-repeat="game in vm.currentGames track by $index">
-  <div class="panel-heading">{{game.title}}</div>
+  <div class="panel-heading">{{game.awayTeam}} @ {{game.homeTeam}}</div>
   <div class="panel-body">
     <ul class="list-group">
     <li class="list-group-item">
-        <span class="badge">{{game.team1Score}}</span>
-        {{game.team1}}
+        <span class="badge">{{game.homeScore}}</span>
+        {{game.homeTeam}}
     </li>
     <li class="list-group-item">
-        <span class="badge">{{game.team2Score}}</span>
-        {{game.team2}}
+        <span class="badge">{{game.awayScore}}</span>
+        {{game.awayTeam}}
     </li>
     </ul>
   </div>

@@ -20,11 +20,11 @@ let exportedMethods = {
     insertMany(scoresParam) {
         return scoresCollection().then((scores) => {
             return scores.insertMany(scoresParam).then((response) => {
-                if (response.acknowledged) return response.insertedIds;
+                if (response.insertedCount > 0) return response.insertedIds;
                 else throw "Insertion error!";
             })
         }, (error) => {
-            throw "Couldn't retreive scores collection";
+            throw "Couldn't retrieve scores collection";
         })
     }
 }

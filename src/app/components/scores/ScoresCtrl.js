@@ -5,8 +5,8 @@
         .module('app')
         .controller('ScoresCtrl', ScoresCtrl);
 
-    ScoresCtrl.$inject = ['$rootScope','ScoresService'];
-    function ScoresCtrl($rootScope,ScoresService) {
+    ScoresCtrl.$inject = ['ScoresService','$rootScope'];
+    function ScoresCtrl(ScoresService,$rootScope) {
         var vm = this;
 
         initController();
@@ -17,6 +17,7 @@
 
         function getLatestScores(){
              ScoresService.GetCurrentScores().then(function(scores){
+		console.log(scores);
                 vm.currentGames = scores;
             },function(error){
                 alert(error);

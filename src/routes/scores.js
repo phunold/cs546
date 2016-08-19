@@ -5,20 +5,17 @@ const scoresDAL = DAL.scoresDAL;
 
 router.get("/", (req, res) => { 
 
-	scoresDAL.getScores().then(()=>{
-		
+	scoresDAL.getScores().then((scores)=>{
+		res.json(scores);
 	}).catch((e) => {
-
+		res.status(500).json({ error: e });
 	});
 });
 
 router.post("/", (req, res) => {
-	
-	scoresDAL.updateScores().then(()=>{
-	
-
-	}).catch((e) => {
-
+	var scores = req.body();
+	scoresDAL.insertMany(scores).catch((e) => {
+		res.status(500).json({ error: e });
 	});
 });
 

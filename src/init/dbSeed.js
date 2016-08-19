@@ -5,6 +5,7 @@ var bcrypt = require("bcrypt-nodejs");
 const salamiDAL = DAL.salamiDAL;
 const usersDAL = DAL.usersDAL;
 const wagersDAL = DAL.wagersDAL;
+const scoresDAL = DAL.scoresDAL;
 
 var _leagueId = ""
 var _leagueMem1 = "";
@@ -123,7 +124,45 @@ dbConnection().then(db => {
             draw: 1
         }
         return usersDAL.updateRecord(_leagueMem4,rec);
-    }).then((league) => {
+    }).then((res) => {
+        scoresArray = [];
+	score1 = {
+            homeTeam: "Yankees",
+            awayTeam: "Red Sox",
+            homeScore: 4,
+	    awayScore: 2
+        };
+	score2 = {
+            homeTeam: "Twins",
+            awayTeam: "Royals",
+            homeScore: 8,
+	    awayScore: 1
+        };
+	score3 = {
+            homeTeam: "Mets",
+            awayTeam: "Giants",
+            homeScore: 7,
+	    awayScore: 10
+        };
+	score4 = {
+            homeTeam: "Cardinals",
+            awayTeam: "Pirates",
+            homeScore: 8,
+	    awayScore: 6
+        };
+	score5 = {
+            homeTeam: "Cubs",
+            awayTeam: "Angels",
+            homeScore: 6,
+	    awayScore: 3
+        };
+	scoresArray.push(score1);
+	scoresArray.push(score2);
+	scoresArray.push(score3);
+	scoresArray.push(score4);
+	scoresArray.push(score5);
+        return scoresDAL.insertMany(scoresArray);
+    }).then((res) => {
         console.log("Done seeding database");
         db.close();
     });
