@@ -8,11 +8,11 @@
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
     function config($stateProvider, $urlRouterProvider) {
-         // For any unmatched url, redirect
+        // For any unmatched url, redirect
         $urlRouterProvider.otherwise("/app/home");
-        
+
         $stateProvider
-            
+
             .state('login', {
                 url: '/login',
                 templateUrl: 'components/login/loginView.html',
@@ -31,9 +31,9 @@
                     pageTitle: "Register"
                 }
             })
-            .state('app',{
-                url:'/app',
-                templateUrl :'common/views/appView.html',
+            .state('app', {
+                url: '/app',
+                templateUrl: 'common/views/appView.html',
                 abstract: true
             })
             .state('app.home', {
@@ -74,19 +74,19 @@
             });
 
 
-       
-       
+
+
     }
 
     run.$inject = ['$rootScope', '$state', '$http'];
-    function run($rootScope, $state,  $http) {
+    function run($rootScope, $state, $http) {
         // keep user logged in after page refresh
         // if we used token based authentication to login
-        if(!localStorage.CUR_USER){
+        if (!localStorage.CUR_USER) {
             localStorage.CUR_USER = JSON.stringify({});
         }
         $rootScope.curUser = JSON.parse(localStorage.CUR_USER);
-    
+
         if ($rootScope.curUser) {
             //$http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.curUser.authData; 
             //token appending to header. will need to verify when getting api calls
@@ -99,28 +99,28 @@
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             // redirect to login page if not logged in and trying to access a restricted page
             var restrictedPage = false;
-            console.log("To State: ",toState.name);
+            console.log("To State: ", toState.name);
 
             //set the page title
-            if(toState.data && toState.data.pageTitle){
+            if (toState.data && toState.data.pageTitle) {
                 $rootScope.pageTitle = toState.data.pageTitle;
             }
 
-            if(toState.name === "app.home"){
+            if (toState.name === "app.home") {
                 restrictedPage = true;
             }
-            else if(toState.name === "app.league"){
+            else if (toState.name === "app.league") {
                 restrictedPage = true;
-            }else if(toState.name === "app.leaderboards"){
+            } else if (toState.name === "app.leaderboards") {
                 restrictedPage = true;
-            }else if(toState.name === "app.scores"){
+            } else if (toState.name === "app.scores") {
                 restrictedPage = true;
             }
 
-          
+
             var curUser = $rootScope.curUser;
-            if(curUser){
-                !Object.keys(curUser).length? curUser=false : null;
+            if (curUser) {
+                !Object.keys(curUser).length ? curUser = false : null;
             }
             if (restrictedPage && !curUser) {
                 event.preventDefault();

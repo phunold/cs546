@@ -7,7 +7,7 @@ const salamiDAL = DAL.salamiDAL;
 
 //GET METHODS
 //get Salami
-router.get("/", (req, res) => { 
+router.get("/", (req, res) => {
     salamiDAL.getCurrentGrandSalami().then((salami) => {
         res.json(salami);
     }).catch((e) => {

@@ -5,57 +5,57 @@ const usersDAL = DAL.usersDAL;
 // needs a loginUser(email,password) func to login the user, create a SESSION_ID and USER_ID cookie. returns the sessionid (a uuid);
 // needs a terminateSession(sessionId,userId) func to remove that session ID from the user's sessions array in mongoDB
 let exportedMethods = {
-	
-	loginUser(email, password){
-		return usersDAL.getUserByEmail(email).then((user)=>{
-			if(!user){
+
+	loginUser(email, password) {
+		return usersDAL.getUserByEmail(email).then((user) => {
+			if (!user) {
 				throw "Unable to find user with that login.";
 			}
-			return new Promise((fulfill,reject)=>{
-				bcrypt.compare(password, user.passwd, function(err, res){
-					if(res === true){
+			return new Promise((fulfill, reject) => {
+				bcrypt.compare(password, user.passwd, function (err, res) {
+					if (res === true) {
 						//Successful authentication
 						var SESSION_ID = uuid.v1();
 						var response = {
-							SESSION_ID : SESSION_ID,
-							USER_ID : user._id.toString(),
+							SESSION_ID: SESSION_ID,
+							USER_ID: user._id.toString(),
 							USER_ID_OBJ: user._id
 						};
 						fulfill(response);
-						
-					}else{
+
+					} else {
 						//Incorrect password
-						
+
 						reject("Invalid Login. Please Try Again");
 					}
 				});
-			}).then((sessionResponse)=>{
-				return usersDAL.updateUserSession(sessionResponse.USER_ID_OBJ, sessionResponse.SESSION_ID).then((response)=>{
+			}).then((sessionResponse) => {
+				return usersDAL.updateUserSession(sessionResponse.USER_ID_OBJ, sessionResponse.SESSION_ID).then((response) => {
 					return response;
-				},(error)=>{
+				}, (error) => {
 					throw "Cant update user session";
 				});
-			},(error)=>{
+			}, (error) => {
 				throw error;
 			});
-			
-		},(error)=>{
-			throw "Unable to find user. "+error;
+
+		}, (error) => {
+			throw "Unable to find user. " + error;
 		});
 	},
 
-	terminateSession(sessionId, userId){
-		return usersDAL.getUserByID(userId).then((user)=>{
-			if(!user){
-				throw {message: "Unable to find user."};
+	terminateSession(sessionId, userId) {
+		return usersDAL.getUserByID(userId).then((user) => {
+			if (!user) {
+				throw { message: "Unable to find user." };
 			}
-			return usersDAL.removeUserSession(user._id, sessionId).then((response)=>{
+			return usersDAL.removeUserSession(user._id, sessionId).then((response) => {
 				return response;
-			},(error)=>{
+			}, (error) => {
 				throw "Cant update user session";
 			});
-		},(error)=>{
-			throw "Unable to find user. "+error;
+		}, (error) => {
+			throw "Unable to find user. " + error;
 		});
 	}
 }

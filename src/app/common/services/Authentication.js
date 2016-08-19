@@ -5,7 +5,7 @@
         .module('app')
         .factory('AuthenticationService', AuthenticationService);
 
-    AuthenticationService.$inject = ['$http', '$rootScope', '$timeout', 'UserService','$q'];
+    AuthenticationService.$inject = ['$http', '$rootScope', '$timeout', 'UserService', '$q'];
     function AuthenticationService($http, $rootScope, $timeout, UserService, $q) {
         var service = {};
 
@@ -17,24 +17,24 @@
         return service;
 
         function Login(email, pass) {
-            
+
             var deferred = $q.defer();
-            
+
             return $http.post('/authenticate', { email: email, password: pass }).then(
-                function(response){
+                function (response) {
                     console.log(response);
                     return response.data;
-                },function(error){
+                }, function (error) {
                     throw error.data.error;
                 });
         }
 
-        function Logout(){
+        function Logout() {
             return $http.get('/logout').then(
-                function(response){
+                function (response) {
                     console.log(response);
                     return response.data;
-                },function(error){
+                }, function (error) {
                     throw error.data.error;
                 });
         }
@@ -43,14 +43,14 @@
             //make a secret token
 
             $rootScope.curUser = {
-                    email: email,
-                    authdata: sessionId
-                };
+                email: email,
+                authdata: sessionId
+            };
 
-                // using cookie authentication instead of header.
+            // using cookie authentication instead of header.
             //$http.defaults.headers.common['Authorization'] = 'Basic ' + sessionId; 
             localStorage.CUR_USER = JSON.stringify($rootScope.curUser);
-            
+
         }
 
         function RemoveUserData() {

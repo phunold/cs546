@@ -5,7 +5,7 @@
         .module('app')
         .factory('ScoresService', ScoresService);
 
-    ScoresService.$inject = ['$http', '$timeout','$q'];
+    ScoresService.$inject = ['$http', '$timeout', '$q'];
     function ScoresService($http, $timeout, $q) {
         var service = {};
 
@@ -14,14 +14,14 @@
         return service;
 
         function GetCurrentScores() {
-            return $http.get('/api/scores').then(function(success){
+            return $http.get('/api/scores').then(function (success) {
                 return success.data;
-            },function(error){
+            }, function (error) {
                 throw error;
             });
         }
 
-        
+
     }
 
 

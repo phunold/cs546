@@ -5,7 +5,7 @@
         .module('app')
         .controller('LeaderboardsCtrl', LeaderboardsCtrl);
 
-    LeaderboardsCtrl.$inject = ['$rootScope','UserService'];
+    LeaderboardsCtrl.$inject = ['$rootScope', 'UserService'];
     function LeaderboardsCtrl($rootScope, UserService) {
         var vm = this;
 
@@ -17,15 +17,15 @@
             getLeaderboardUsers();
         }
 
-        function getLeaderboardUsers(){
-            UserService.GetTopRecordHolders().then(function(users){ 
+        function getLeaderboardUsers() {
+            UserService.GetTopRecordHolders().then(function (users) {
                 vm.leaderboardUsers = users;
-            },function(error){
-                alert("Error loading leaderboard: "+error);
+            }, function (error) {
+                alert("Error loading leaderboard: " + error);
             });
         }
-        
-       
+
+
     }
 
 })();

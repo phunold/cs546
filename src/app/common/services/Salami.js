@@ -5,7 +5,7 @@
         .module('app')
         .factory('SalamiService', SalamiService);
 
-    SalamiService.$inject = ['$http', '$timeout','$q'];
+    SalamiService.$inject = ['$http', '$timeout', '$q'];
     function SalamiService($http, $timeout, $q) {
         var service = {};
 
@@ -14,14 +14,14 @@
         return service;
 
         function GetCurrentSalami() {
-            return $http.get('/api/salami').then(function(success){
+            return $http.get('/api/salami').then(function (success) {
                 return success.data;
-            },function(error){
+            }, function (error) {
                 throw error;
             });
         }
 
-        
+
     }
 
 

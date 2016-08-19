@@ -17,8 +17,8 @@
                 .then(function (response) {
                     alert("Congratulations! Now please sign in");
                     $state.go('login');
-                    
-                },function(error){
+
+                }, function (error) {
                     alert(error);
                     vm.dataLoading = false;
                 });

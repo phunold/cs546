@@ -19,15 +19,15 @@
 
         function login() {
             vm.dataLoading = true;
-            AuthenticationService.Login(vm.email, vm.password).then(function(sessionId){
+            AuthenticationService.Login(vm.email, vm.password).then(function (sessionId) {
                 AuthenticationService.StoreUserData(vm.email, sessionId);
                 $state.go('app.home');
-            },function(error){
+            }, function (error) {
                 alert(error);
                 vm.dataLoading = false;
             });
         };
-        
+
     }
 
 })();

@@ -15,9 +15,9 @@ router.post("/", (req, res) => {
 	var email = user.email;
 	var passwd = user.passwd;
 
-	usersDAL.createUser(fname, lname, email, passwd).then((success)=>{
-        console.log("USER");
-        res.status(200).json({result: "Created Successfully"});
+	usersDAL.createUser(fname, lname, email, passwd).then((success) => {
+
+        res.status(200).json({ result: "Created Successfully" });
     }).catch((e) => {
 		res.status(500).json({ error: e });
 	});

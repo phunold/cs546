@@ -3,9 +3,9 @@ const router = express.Router();
 const DAL = require("../DAL");
 const scoresDAL = DAL.scoresDAL;
 
-router.get("/", (req, res) => { 
+router.get("/", (req, res) => {
 
-	scoresDAL.getScores().then((scores)=>{
+	scoresDAL.getScores().then((scores) => {
 		res.json(scores);
 	}).catch((e) => {
 		res.status(500).json({ error: e });
