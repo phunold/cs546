@@ -8,7 +8,7 @@ const scoreRoutes = require("./scores");
 const constructorMethod = (app) => {
     app.use("/authenticate/", authRoutes);
     app.use("/users/", registerRoutes);
-    app.use("/api/users/", usersRoutes);
+    app.use("/api/users", usersRoutes);
     app.use("/api/salami/", salamiRoutes);
     app.use("/api/wager/", wagerRoutes);
     app.use("/api/scores/", scoreRoutes);

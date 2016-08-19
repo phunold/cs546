@@ -11,12 +11,9 @@ let exportedMethods = {
 			if(!user){
 				throw {message: "Unable to find user."}
 			}
-			console.log("COMPARING: "+password+"  -   "+ user.passwd);
-			//TODO: FIGURE THIS OUT!!!!!!!!!!!!!!!!!! ALWAYS FAILING
 			return new Promise((fulfill,reject)=>{
 				bcrypt.compare(password, user.passwd, function(err, res){
 					if(res === true){
-						console.log("successful bcrypt");
 						//Successful authentication
 						var SESSION_ID = uuid.v1();
 						var response = {
@@ -24,18 +21,15 @@ let exportedMethods = {
 							USER_ID : user._id.toString(),
 							USER_ID_OBJ: user._id
 						};
-						console.log(response);
 						fulfill(response);
 						
 					}else{
-						console.log("unsuccessful bcrypt"+res);
 						//Incorrect password
 						
 						reject("Invalid Login. Please Try Again");
 					}
 				});
 			}).then((sessionResponse)=>{
-				console.log("HOLY GOD IT WORKS");
 				return usersDAL.updateUserSession(sessionResponse.USER_ID_OBJ, sessionResponse.SESSION_ID).then((response)=>{
 					return response;
 				},(error)=>{
@@ -51,9 +45,7 @@ let exportedMethods = {
 	},
 
 	terminateSession(sessionId, userId){
-		console.log("terminateSession");
 		return usersDAL.getUserByID(userId).then((user)=>{
-			console.log(user);
 			if(!user){
 				throw {message: "Unable to find user."};
 			}

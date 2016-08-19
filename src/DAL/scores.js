@@ -9,11 +9,10 @@ let exportedMethods = {
 
     getScores() {
         return scoresCollection().then((scores) => {
-            console.log("Got scores!");
-            return scores;
+            return scores.find({}).toArray();
         }, (error) => {
             throw "Couldn't get scores!";
-        })
+        });
 
 
     },

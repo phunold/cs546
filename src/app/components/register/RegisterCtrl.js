@@ -10,13 +10,6 @@
         var vm = this;
 
         vm.register = register;
-        vm.user = {
-            email: "abc@email.com",
-            passwd: "password",
-            fname: "Bird",
-            lname: "Hate THis Class"
-
-        }
 
         function register() {
             vm.dataLoading = true;

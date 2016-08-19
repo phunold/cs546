@@ -14,29 +14,30 @@ const usersDAL = DAL.usersDAL;
 const Data = require("./data");
 const authData = Data.authData;
 //Middlewares:
-
+/*
 app.use("/api*",function(request,response,next){
     //check if the user has a sessionid
     var userId = request.cookies.USER_ID;
-    usersDAL.getUserByID(userId).then(function(user){
-        var sessionId = request.cookies.SESSION_ID;
-        var sessionArray = user.sessions;
-        if(sessionArray.indexOf(sessionId) == -1){
-            response.status(401).send("Unauthorized Access Attempt. Session invalid");
-        }else{
-            next();
-	    console.log("Success");
-        }
-    },function(error){
-        response.status(500).send("Unauthorized Access Attempt. Session invalid");
-    });
+    var sessionId = request.cookies.SESSION_ID;
+    if(userId && sessionId){
+        next();
+    }else{
+        response.status(401).send("Unauthorized Access Attempt. Session invalid");
+    }
 });
-
+*/
 app.use("/logout", function(request, response, next){
     authData.terminateSession(request.cookies.SESSION_ID, request.cookies.USER_ID).then(function(){
-        //TODO: expire the USER_ID and SESSION_ID cookies
-	response.clearCookie("SESSION_ID");
-	response.clearCookie("USER_ID");
+        var anHourAgo = new Date();
+        anHourAgo.setHours(anHourAgo.getHours() -1);
+    
+        response.cookie("SESSION_ID", "", { expires: anHourAgo });
+        response.cookie("USER_ID", "", { expires: anHourAgo });
+        response.clearCookie("SESSION_ID");
+        response.clearCookie("USER_ID");
+        
+        console.log("ALL GOOD LOGOUT");
+        response.status(200);
     },function(error){
         //error wiping the session data from the users prof
     response.clearCookie("SESSION_ID");
@@ -46,6 +47,7 @@ app.use("/logout", function(request, response, next){
 
 });
 
+configRoutes(app);
 
 // application -------------------------------------------------------------
 // https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular
@@ -58,7 +60,7 @@ app.get('/', function(req, res) {
 });
 
 
-configRoutes(app);
+
 
 app.listen(3000, () => {
     console.log("We've now got a server!");

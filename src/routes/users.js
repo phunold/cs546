@@ -23,7 +23,7 @@ router.get("/id/:id", (req, res) => {
 });
 
 //Get by Username/Email
-router.get("/:email", (req, res) => { 
+router.get("/:email/", (req, res) => { 
     usersDAL.getUserByEmail(req.params.email).then((user) => {
         res.json(user);
     }).catch((e) => {

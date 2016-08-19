@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeCtrl', HomeCtrl);
 
-    HomeCtrl.$inject = ['UserService', 'SalamiService' , '$interval', '$rootScope']; //TODO: inject WagerService
-    function HomeCtrl(UserService, SalamiService , $interval, $rootScope) {
+    HomeCtrl.$inject = ['UserService', 'SalamiService' ,'WagerService', '$interval', '$rootScope','$scope']; //TODO: inject WagerService
+    function HomeCtrl(UserService, SalamiService ,WagerService, $interval, $rootScope, $scope) {
         var vm = this;
 
         //variable initialization
@@ -20,7 +20,6 @@
 
         vm.deleteUser = deleteUser;
         vm.placeSalamiWager = placeSalamiWager;
-        //vm.addWagerInfoToUser = addWagerInfoToUser; //don't add to vm unless needed to be called in view
         
         initController();
         //set interval to update the salami
@@ -28,13 +27,14 @@
         
         function initController() {
             loadCurrentUser();
-            //getCurrentSalami();
+            getCurrentSalami();
             
         }
 
         function getCurrentSalami(){
             SalamiService.GetCurrentSalami().then(function(currentSalami){
                 vm.currentSalami = currentSalami;
+                vm.currentSalami.time = new Date(currentSalami.day).toDateString();
             }, function(error){
                 alert("System Error, Couldn't load current Salami!");;
             });
@@ -43,13 +43,14 @@
 
         function addWagerInfoToUser(){
             WagerService.GetLastWager().then(function(wager){
-                var today  = new Date().toString();
-                if(wager.timestamp === today){ //TODO: determine date info from wager
+                var today  = new Date();
+                var timestamp = new Date(wager.timestamp);
+                if(timestamp.toDateString() === today.toDateString()){ //TODO: determine date info from wager
                     vm.user.hasCurrentDayWager = true;
                 }else{
                     vm.user.hasCurrentDayWager = false;
                 }
-                vm.user.currentWager = wager.wager;
+                vm.user.currentWager = wager.side;
                 vm.user.currentWagerAmount = wager.wagerAmount;
 
             },function(error){
@@ -62,6 +63,7 @@
             var wagerAmount = vm.newWager.wagerAmount;
             WagerService.PlaceSalamiWager(wager, wagerAmount).then(function(receipt){
                 alert(receipt);
+                addWagerInfoToUser();;
             },function(error){
                 alert("Error placing wager: " + error);
             });
@@ -72,7 +74,8 @@
             UserService.GetByEmail($rootScope.curUser.email)
                 .then(function (user) {
                     vm.user = user;
-                    //TODO: addWagerInfoToUser();
+                    addWagerInfoToUser();
+                    
                 });
         }
 

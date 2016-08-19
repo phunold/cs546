@@ -23,7 +23,12 @@
         }
 
         function GetByEmail(email) {
-            return $http.get('/api/users/' + email).then(handleSuccess, handleError('Error getting user by email'));
+            email = encodeURI(email);
+            return $http.get('/api/users/' + email).then(function(response){
+                return response.data;
+            },function(error){
+                throw error.data.error;
+            });
         }
 
         function GetTopRecordHolders(){

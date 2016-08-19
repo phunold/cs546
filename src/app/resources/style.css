@@ -1,0 +1,14 @@
+small {
+    color: darkred !important;
+}
+.navbar-toggle {
+    background-color: lightsteelblue !important;
+}
+.navbar-collapsed {
+    background-color: lightsteelblue !important;
+}
+
+.salami-title {
+    font-size: 4em;
+    font-weight: bolder;
+}

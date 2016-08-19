@@ -9,7 +9,7 @@
     function SalamiService($http, $timeout, $q) {
         var service = {};
 
-        //service.GetCurrentSalami = GetCurrentSalami;
+        service.GetCurrentSalami = GetCurrentSalami;
 
         return service;
 

@@ -24,7 +24,6 @@ let uniqueEmail = function(email){
 
 let validateLeague = function(leagueId){
     return leagueCollection().then((leagueColl)=>{
-        console.log("LeagueColl", leagueColl)
         leagueColl.find(leagueId).then((leagueRecord)=>{
         if(leagueRecord){
             console.log("League ID is valid!", leagueRecord)
@@ -119,6 +118,16 @@ let exportedMethods = {
         }
         return null;
     },
+    createLeague(users,leagueName){
+        //users is an arary o fIDs 
+        return leagueCollection().then((leagues)=>{
+            var league = {
+                "userIds": users,
+                "name": leagueName
+            }
+            return leagues.insert(league).then
+        })
+    },
 
     getUsersByLeague(leagueId){
         return userCollection().then((userColl)=>{
@@ -189,9 +198,9 @@ let exportedMethods = {
         })
     },
     removeUserSession(userId, sessionId){
-	console.log("Removing:"+userId+" "+sessionId);
+	    console.log("Removing:"+userId+" "+sessionId);
         return exportedMethods.getUserByID(userId).then((user)=>{
-	    var index = user.sessions.indexOf(sessionId);
+	        var index = user.sessions.indexOf(sessionId);
             user.sessions.splice(index, 1);
             return userCollection().then((userColl)=>{
                 return userColl.update({"_id":user._id},user).then((updateResponse)=>{

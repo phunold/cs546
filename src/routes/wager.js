@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const DAL = require("../DAL");
-const wagerDAL = DAL.wagerDAL;
+const wagersDAL = DAL.wagersDAL;
 
 //get last wager
 router.get("/:username", (req, res) => { 
 	var email = req.params.username;
-    wagerDAL.getLastWagerByEmail().then((dataList) => {
+    wagersDAL.getLastWagerByEmail(email).then((dataList) => {
         res.json(dataList);
     }).catch((e) => {
         res.status(500).json({ error: e });
@@ -16,11 +16,13 @@ router.get("/:username", (req, res) => {
 //create wager
 router.post("/", (req, res) => { 
 	var wager = req.body;
-	var userID = wager.userID;
-	var timestamp = wager.timestamp;
+	var userID = req.cookies.USER_ID;
+	var timestamp = new Date();
 	var side = wager.wager;
 
-	usersDAL.createWager(userID, timestamp, side).catch((e) => {
+	wagersDAL.createWager(userID, timestamp, side).then((wagerId)=>{
+		res.status(200).json(wagerId.toString());
+	}).catch((e) => {
 		res.status(500).json({ error: e });
 	});
 });

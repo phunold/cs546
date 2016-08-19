@@ -3,16 +3,9 @@ const salamiCollection = mongoCollections.grandsalami;
 const uuid = require('node-uuid');
 const ObjectId = require('mongodb').ObjectId; 
 
-let  getCurrentSalami = function (){
+let  getCurrentSalami = function(){
         //get today's salami 
-        return salamiCollection.then((salamiCollection) =>{
-            return salamiCollection.find({"day": { '$gte': new Date() } }).then((currentSalami) =>{
-                console.log("Got today's salami!");
-                return currentSalami;
-            }, (error) =>{
-                throw "Unable to fetch today's salami!";
-            })
-        })
+        
     }
 
 let exportedMethods = {
@@ -33,36 +26,13 @@ let exportedMethods = {
         })
     },
     getCurrentGrandSalami(){
-        return getCurrentSalami().then((currentSalami)=>{
-            return currentSalami;
-        }, (error)=>{
-            throw "Unable to today's salami number";
-        })
-    },
-    getSalami(){
-        //gets current day's salami number
-        return getCurrentSalami().then((currentSalami)=>{
-            return currentSalami.grandsalami;
-        }, (error)=>{
-            throw "Unable to today's salami number";
-        })
-
-    },
-    getFinalScore(){
-        //gets the final score for the day
-        return getCurrentSalami().then((currentSalami)=>{
-            return currentSalami.finalscore;
-        }, (error)=>{
-            throw "Unable to fetch finalScore for the day";
-        })
-    },
-    getOverUnder(){
-    	//returns whether the day resulted in over or under
-        return getCurrentSalami().then((currentSalami)=>{
-            return currentSalami.over_under;
-        }, (error) =>{
-           throw "Unable to fetch over_under";
-        })
+        return salamiCollection().then((salamiColl) =>{
+            return salamiColl.find().sort({ "day": -1 }).limit(1).toArray();
+        }).then((salami)=>{
+            return salami[0];
+        },(error)=>{
+            throw error;
+        });
     }
 }
 
