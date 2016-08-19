@@ -5,17 +5,23 @@
         .module('app')
         .controller('ScoresCtrl', ScoresCtrl);
 
-    ScoresCtrl.$inject = ['$rootScope'];
-    function ScoresCtrl($rootScope) {
+    ScoresCtrl.$inject = ['$rootScope','ScoresService'];
+    function ScoresCtrl($rootScope,ScoresService) {
         var vm = this;
-
-        vm.user = null;
 
         initController();
 
         function initController() {
+            getLatestScores();
         }
 
+        function getLatestScores(){
+             ScoresService.GetCurrentScores().then(function(scores){
+                vm.currentGames = scores;
+            },function(error){
+                alert(error);
+            });
+        }
         
     }
 
