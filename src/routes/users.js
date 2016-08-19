@@ -56,6 +56,27 @@ router.get("/league/info/:leagueID", (req, res) => {
     });
 });
 
+router.post("/league/create/", (req, res) => { 
+    var userId = req.cookies.USER_ID;
+    var name = req.body.name
+    return usersDAL.createLeague([],name).then((league) => {
+        return usersDAL.joinLeague(userId,league);
+    }).then((response)=>{
+        res.status(200).json(response);
+    }).catch((e) => {
+        res.status(500).json({ error: e });
+    });
+});
+
+router.put("/league/join/", (req, res) => { 
+    var userId = req.cookies.USER_ID;
+    var leagueId = req.body.leagueId
+    usersDAL.joinLeague(userId,leagueId).then((result) => {
+        res.json(result);
+    }).catch((e) => {
+        res.status(500).json({ error: e });
+    });
+});
 
 //POST METHODS
 //Create User
@@ -87,9 +108,9 @@ router.post("/join", (req, res) => {
 router.put("/:id", (req, res) => {
     var user = req.body;
 	var userID = user.id;
-	var result = req.param('result');
+	var result = req.body.record;
 
-	usersDAL.updateUser(id, updatedUser).catch((e) => {
+	usersDAL.updateUser(id, result).catch((e) => {
 		res.status(500).json({ error: e });
 	});
 });

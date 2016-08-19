@@ -14,6 +14,8 @@
         service.GetUsersByLeague = GetUsersByLeague;
         service.GetLeagueInformation = GetLeagueInformation;
         service.GetTopRecordHolders = GetTopRecordHolders;
+        service.JoinLeague = JoinLeague;
+        service.CreateLeague = CreateLeague;
         service.Create = Create;
         service.Update = Update;
         service.Delete = Delete;
@@ -37,7 +39,7 @@
         function GetTopRecordHolders(){
             //returns json obj with array of user objects. 
             return $http.get('/api/users/top/leaderboard/').then(function(success){
-                console.log("TOP: ",success);
+                return success.data;
             },function(error){
                 throw error;
             });
@@ -53,6 +55,27 @@
         }
         function GetLeagueInformation(leagueId){
             return $http.get('/api/users/league/info/'+ leagueId).then(function(success){
+                console.log(success.data);
+                return success.data;
+            },function(error){
+                throw error;
+            });
+        }
+
+        function JoinLeague(leagueId) {
+            
+            return $http.put('/api/users/league/join/',{leagueId: leagueId}).then(function(success){
+                console.log(success.data);
+                return success.data;
+            },function(error){
+                throw error;
+            });
+        }
+        function CreateLeague(newName) {
+            var leagueInfo = {
+                name: newName
+            }
+            return $http.post('/api/users/league/create/',leagueInfo).then(function(success){
                 console.log(success.data);
                 return success.data;
             },function(error){

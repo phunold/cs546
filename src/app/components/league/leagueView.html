@@ -1,6 +1,40 @@
+<div ng-show="!vm.showLeague" >
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Interact with your friends!!!</h1>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="joinLeagueName">Enter League ID</label>
+                <input type="text" name="joinLeagueName" id="joinLeagueName" class="form-control" ng-model="vm.joinLeagueName"  />
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <button class="btn btn-success" ng-click="vm.joinLeague()">Join A League</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="createLeagueName">New League Name ( Be creative :-) )</label>
+                <input type="text" name="createLeagueName" id="createLeagueName" class="form-control" ng-model="vm.createLeagueName"  />
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <button class="btn btn-info" ng-click="vm.createLeague()">Create A League</button>
+        </div>
+    </div>
 
-<div class="panel panel-success">
-    <div class="panel-heading"><h1>My League - <small>{{vm.league.name}}</small></h1></div>
+
+</div>
+
+
+<div class="panel panel-success" ng-show="vm.showLeague">
+    <div class="panel-heading"><h1>My League - <small>{{vm.league.name}}</small></h1>
+    <h6>League Id: {{vm.league._id}}</h6>
+    </div>
     <table class="table">
         <thead>
             <tr> 

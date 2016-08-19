@@ -51,13 +51,25 @@ let exportedMethods = {
     getTopUsers(){
         return userCollection().then((userColl)=>{
             return userColl.find().sort({"record.win": -1}).limit(3).toArray().then((topUsers) =>{
-                return topUsers;    
+               if(topUsers.length>0){
+                    var top = [];
+                    for(var i = 0; i< topUsers.length; i++){
+                        top.push({
+                            fname: topUsers[i].fname,
+                            lname: topUsers[i].lname,
+                            record: topUsers[i].record
+                        });
+                    }
+                    console.log(top);
+                    return top;
+                } throw "No users found";
             }, (error)=>{
                 throw "Couldn't retrieve top users!";
             }) 
         })
     },
     createUser(fname,lname,email,password){
+        email = email.toLowerCase();
         return uniqueEmail(email).then((uniqueEmail)=>{
             if(uniqueEmail){
                 return userCollection().then((users)=>{
@@ -101,10 +113,10 @@ let exportedMethods = {
 
     joinLeague(userId, leagueId){
         //join a specified league with given user
-        return validateLeague(leagueId).then((leagueExists)=>{
+        return validateLeague(ObjectId(leagueId)).then((leagueExists)=>{
             if(leagueExists){
                  return exportedMethods.getUserByID(userId).then((user)=>{
-                    user.leagueId = leagueId;
+                    user.leagueId = ObjectId(leagueId);
                     return userCollection().then((userColl)=>{
                         return userColl.update({"_id":user._id},user).then((updateResponse)=>{
                             return exportedMethods.addUserToLeague(user._id, user.leagueId);
@@ -221,7 +233,6 @@ let exportedMethods = {
             return userColl.findOne({ "email" : userEmail }).then((user)=>{
                 if (user)
                 {   
-                    console.log("Email found!!!");
                     return user;
                 }
                 console.log("Email not found!");

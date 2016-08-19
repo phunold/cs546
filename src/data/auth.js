@@ -9,7 +9,7 @@ let exportedMethods = {
 	loginUser(email, password){
 		return usersDAL.getUserByEmail(email).then((user)=>{
 			if(!user){
-				throw {message: "Unable to find user."}
+				throw "Unable to find user with that login.";
 			}
 			return new Promise((fulfill,reject)=>{
 				bcrypt.compare(password, user.passwd, function(err, res){

@@ -1,6 +1,6 @@
 
-<div class="panel panel-primary">
-    <div class="panel-heading"><h1>Global Leaderboard <small style="color:#ffffff">Ranked by wins</small></h1></div>
+<div class="panel panel-info">
+    <div class="panel-heading"><h1>Global Leaderboard <small>Top 3 Users</small></h1></div>
     <table class="table">
         <thead>
             <tr>
@@ -12,22 +12,10 @@
         </thead>
         <tbody>
             <tr ng-repeat="user in vm.leaderboardUsers track by $index">
-                <th scope="row">{{$index}}</th>
-                <td>{{user.firstName}}</td>
-                <td>{{user.lastName}}</td>
-                <td>{{user.record.wins}}</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
+                <th scope="row">{{$index+1}}</th>
+                <td>{{user.fname}}</td>
+                <td>{{user.lname}}</td>
+                <td>{{user.record.win}}</td>
             </tr>
         </tbody>
     </table>

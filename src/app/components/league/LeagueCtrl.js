@@ -11,11 +11,30 @@
 
         vm.user = null;
         vm.leagueUsers = null;
+        vm.joinLeague = joinLeague;
+        vm.createLeague = createLeague;
+        vm.showLeague = false;
 
         initController();
 
         function initController() {
             loadCurrentUser();
+        }
+
+        function joinLeague(){
+            UserService.JoinLeague(vm.joinLeagueName).then(function(users){
+                loadCurrentUser();
+            },function(error){
+                alert(error);
+            });
+        }
+
+        function createLeague(){
+            UserService.CreateLeague(vm.createLeagueName).then(function(users){
+                loadCurrentUser();
+            },function(error){
+                alert(error);
+            });
         }
 
         function getLeagueUsers(leagueId){
@@ -36,8 +55,12 @@
             UserService.GetByEmail($rootScope.curUser.email)
                 .then(function (user) {
                     vm.user = user;
-                    getLeagueUsers(user.leagueId);
-                    getLeagueInfo(user.leagueId);
+                    if(user.leagueId){
+
+                        vm.showLeague = true;
+                        getLeagueUsers(user.leagueId);
+                        getLeagueInfo(user.leagueId);
+                    }
                 });
         }
     }
