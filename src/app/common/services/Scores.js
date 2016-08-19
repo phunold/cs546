@@ -6,7 +6,7 @@
         .factory('ScoresService', ScoresService);
 
     ScoresService.$inject = ['$http', '$timeout','$q'];
-    function SalamScoresServiceSalamiServiceiService($http, $timeout, $q) {
+    function ScoresService($http, $timeout, $q) {
         var service = {};
 
         service.GetCurrentScores = GetCurrentScores;

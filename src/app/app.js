@@ -111,18 +111,13 @@
             }
             else if(toState.name === "app.league"){
                 restrictedPage = true;
+            }else if(toState.name === "app.leaderboards"){
+                restrictedPage = true;
+            }else if(toState.name === "app.scores"){
+                restrictedPage = true;
             }
 
-            //We could make query to a service to get restricted states and load them 
-            // or just hardcode states here
-            // var restrictedPages = [];
-            // someService.getRestrictedPages().then(function(pages){
-            //     restrictedPages = pages;
-            // },function(error){
-            //     console.log("Error fetching restricted pages: ",error);
-            // });
-            //var restrictedPage = $.inArray(toState, restrictedPages) === -1;
-
+          
             var curUser = $rootScope.curUser;
             if(curUser){
                 !Object.keys(curUser).length? curUser=false : null;

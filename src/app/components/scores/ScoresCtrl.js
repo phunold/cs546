@@ -17,7 +17,7 @@
 
         function getLatestScores(){
              ScoresService.GetCurrentScores().then(function(scores){
-		console.log(scores);
+		        console.log(scores);
                 vm.currentGames = scores;
             },function(error){
                 alert(error);
