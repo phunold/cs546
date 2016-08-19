@@ -1,10 +1,9 @@
 
 <div class="panel panel-success">
-    <div class="panel-heading"><h1>My League</h1></div>
+    <div class="panel-heading"><h1>My League - <small>{{vm.league.name}}</small></h1></div>
     <table class="table">
         <thead>
-            <tr>
-                <th>#</th>
+            <tr> 
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Wins</th>
@@ -14,29 +13,13 @@
         </thead>
         <tbody>
             <tr ng-repeat="user in vm.leagueUsers track by $index">
-                <th scope="row">{{$index}}</th>
-                <td ng-class="{bold-text: user.firstName == vm.user.firstName}">{{user.firstName}}</td>
-                <td>{{user.lastName}}</td>
-                <td>{{user.record.wins}}</td>
-                <td>{{user.record.losses}}</td>
-                <td>{{user.record.draws}}</td>
+                <td>{{user.fname}}</td>
+                <td>{{user.lname}}</td>
+                <td>{{user.record.win}}</td>
+                <td>{{user.record.loss}}</td>
+                <td>{{user.record.draw}}</td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>{{user.record.losses}}</td>
-                <td>{{user.record.draws}}</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td>{{user.record.losses}}</td>
-                <td>{{user.record.draws}}</td>
-            </tr>
+            
         </tbody>
     </table>
 </div>

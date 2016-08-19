@@ -18,20 +18,26 @@
             loadCurrentUser();
         }
 
-        function getLeaugeInformation(leagueId){
+        function getLeagueUsers(leagueId){
             UserService.GetUsersByLeague(leagueId).then(function(users){
                 vm.leagueUsers = users;
             },function(error){
                 alert(error);
             });
-
         }
-
+        function getLeagueInfo(leagueId){
+            UserService.GetLeagueInformation(leagueId).then(function(league){
+                vm.league = league;
+            },function(error){
+                alert(error);
+            });
+        }
         function loadCurrentUser() {
             UserService.GetByEmail($rootScope.curUser.email)
                 .then(function (user) {
                     vm.user = user;
-                    //getLeaugeInformation(user.leagueId);
+                    getLeagueUsers(user.leagueId);
+                    getLeagueInfo(user.leagueId);
                 });
         }
     }

@@ -23,7 +23,7 @@ router.get("/id/:id", (req, res) => {
 });
 
 //Get by Username/Email
-router.get("/:email/", (req, res) => { 
+router.get("/:email", (req, res) => { 
     usersDAL.getUserByEmail(req.params.email).then((user) => {
         res.json(user);
     }).catch((e) => {
@@ -31,7 +31,7 @@ router.get("/:email/", (req, res) => {
     });
 });
 
-router.get("/top", (req, res) => { 
+router.get("/top/leaderboard/", (req, res) => { 
     usersDAL.getTopUsers().then((topUsers) => {
         res.json(topUsers);
     }).catch((e) => {
@@ -47,6 +47,15 @@ router.get("/league/:leagueID", (req, res) => {
         res.status(500).json({ error: e });
     });
 });
+//get league info
+router.get("/league/info/:leagueID", (req, res) => { 
+    usersDAL.getLeague(req.params.leagueID).then((league) => {
+        res.json(league);
+    }).catch((e) => {
+        res.status(500).json({ error: e });
+    });
+});
+
 
 //POST METHODS
 //Create User

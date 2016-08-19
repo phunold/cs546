@@ -24,13 +24,11 @@ let uniqueEmail = function(email){
 
 let validateLeague = function(leagueId){
     return leagueCollection().then((leagueColl)=>{
-        leagueColl.find(leagueId).then((leagueRecord)=>{
-        if(leagueRecord){
-            console.log("League ID is valid!", leagueRecord)
-            return true;
-        }
-        console.log("League ID invalid!");
-        return false;
+        return leagueColl.findOne({"_id":leagueId}).then((leagueRecord)=>{
+            if(leagueRecord){
+                return true;
+            }
+            return false;
         }, (error)=>{
             throw "Couldn't check if league ID is valid!";      
         }) 
@@ -52,7 +50,7 @@ let exportedMethods = {
 
     getTopUsers(){
         return userCollection().then((userColl)=>{
-            userColl.find().sort({"record.win": -1}).limit(15).then((topUsers) =>{
+            return userColl.find().sort({"record.win": -1}).limit(3).toArray().then((topUsers) =>{
                 return topUsers;    
             }, (error)=>{
                 throw "Couldn't retrieve top users!";
@@ -75,7 +73,7 @@ let exportedMethods = {
                             "draw": 0
                             },
                         "sessions" : [],
-                        "league_ids": []
+                        "leagueId" : ""
                     }).then((response)=>{
                         if(response.insertedCount === 1){
                             var id = response.ops[0]._id;
@@ -103,20 +101,62 @@ let exportedMethods = {
 
     joinLeague(userId, leagueId){
         //join a specified league with given user
-        if(validateLeague(leagueId)){
-                return exportedMethods.getUserByID(userId).then((user)=>{
-                    user.league_ids.push(leagueId);
-                    return userCollection.update(user).then((user)=>{
-                        console.log(user._id," is now in leagues ",user.league_ids);
-                        return user;
+        return validateLeague(leagueId).then((leagueExists)=>{
+            if(leagueExists){
+                 return exportedMethods.getUserByID(userId).then((user)=>{
+                    user.leagueId = leagueId;
+                    return userCollection().then((userColl)=>{
+                        return userColl.update({"_id":user._id},user).then((updateResponse)=>{
+                            return exportedMethods.addUserToLeague(user._id, user.leagueId);
+                        }).then((result)=>{
+                            console.log("Users added to league");
+                        },(error)=>{
+                            throw error;
+                        });
                     },(error)=>{
                         throw "Unable to join league";
-                    })
+                    });
+                 },(error)=>{
+                    throw "Couldn't get user for the id";
+                 });
+
+
+            }else{
+                console.log("League Does not Exist");
+                throw "League Does not Exist";
+            }
+            
+        },(error)=>{
+            throw error;
+        });
+                
+
+    },
+    getLeague(leagueId){
+       return leagueCollection().then((leagues)=>{
+            return leagues.findOne({"_id":ObjectId(leagueId)}).then((league)=>{
+                return league;
             },(error)=>{
-                throw "Couldn't get user for the id";
-            })
-        }
-        return null;
+                throw error;
+            });
+        },(error)=>{
+            throw error;
+        });  
+    },
+    addUserToLeague(userId, leagueId){
+        return leagueCollection().then((leagues)=>{
+            return exportedMethods.getLeague(leagueId).then((league)=>{
+                league.userIds.push(userId);
+                return leagues.update({"_id":league._id},league);
+            }).then((updateRes)=>{
+                console.log("UPDATE SUCCESS");
+                return true;
+            },(error)=>{
+                throw error;
+            });
+        },(error)=>{
+            throw error;
+        });
     },
     createLeague(users,leagueName){
         //users is an arary o fIDs 
@@ -125,21 +165,39 @@ let exportedMethods = {
                 "userIds": users,
                 "name": leagueName
             }
-            return leagues.insert(league).then
+            return leagues.insert(league).then((success)=>{
+                if(success.insertedCount ===1){
+                    return success.ops[0]._id;
+                }else{
+                    throw "Unsuccessfully Created League"
+                }
+            },(error)=>{
+                throw league;
+            })
         })
     },
 
-    getUsersByLeague(leagueId){
+    getUsersByLeague(leagueIdentifier){
+
         return userCollection().then((userColl)=>{
-            userColl.findOne({"league_ids": leagueId}).then((users)=>{
-                console.log("Found users by league id!");
-                return users;
+                return userColl.find({"leagueId":ObjectId(leagueIdentifier)}).toArray();
+            }).then((users)=>{
+                if(users.length>0){
+                    var leagueUsers = [];
+                    for(var i = 0; i< users.length; i++){
+                        leagueUsers.push({
+                            fname: users[i].fname,
+                            lname: users[i].lname,
+                            record: users[i].record
+                        });
+                    }
+                    console.log(leagueUsers);
+                    return leagueUsers;
+                } throw "No users found";
+                
             },(error)=>{
-                throw "Cannot find users by league id!";
-            })
-        },(error)=>{
-            throw "ERROR:Getting user by league";
-        })
+                throw "Error Getting users by league";
+            });
     },
 
     getUserByID(userId){
@@ -220,21 +278,19 @@ let exportedMethods = {
             throw "Couldn't get user for the id!Unable to update record!!";
         })
     },
-    updateRecord(userId, result){
+    updateRecord(userId, newRecord){
         //update a user's record with either win, loss, or draw
          return exportedMethods.getUserByID(userId).then((user)=>{
-            return userCollection.update(
-                {"_id": user.id},
-                {
-                    $set: {
-                        "record":{
-                            $inc: {result: 1} //result can be one of the 3 values - win, loss, draw
-                        }
-                    }
+            return userCollection().then((userColl)=>{
+                user.record = newRecord;
+                console.log(user);
+                return userColl.update({"_id":user._id},user);
+            }).then((success)=>{
+                if(success.result.nModified ===1){
+                    return true;
+                }else{
+                    throw "Update Record Error";
                 }
-            ).then((user)=>{
-                console.log(user._id," records are now updated ",user.record);
-                return user;
             },(error)=>{
                 throw "Unable to update record!";
             })

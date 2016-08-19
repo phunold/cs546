@@ -14,7 +14,7 @@ const usersDAL = DAL.usersDAL;
 const Data = require("./data");
 const authData = Data.authData;
 //Middlewares:
-/*
+
 app.use("/api*",function(request,response,next){
     //check if the user has a sessionid
     var userId = request.cookies.USER_ID;
@@ -25,7 +25,7 @@ app.use("/api*",function(request,response,next){
         response.status(401).send("Unauthorized Access Attempt. Session invalid");
     }
 });
-*/
+
 app.use("/logout", function(request, response, next){
     authData.terminateSession(request.cookies.SESSION_ID, request.cookies.USER_ID).then(function(){
         var anHourAgo = new Date();

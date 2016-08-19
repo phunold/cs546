@@ -12,3 +12,6 @@ small {
     font-size: 4em;
     font-weight: bolder;
 }
+.bold-text {
+    font-weight: bolder;
+}

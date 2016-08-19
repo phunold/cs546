@@ -6,23 +6,33 @@ const salamiDAL = DAL.salamiDAL;
 const usersDAL = DAL.usersDAL;
 const wagersDAL = DAL.wagersDAL;
 
+var _leagueId = ""
+var _leagueMem1 = "";
+var _leagueMem2 = "";
+var _leagueMem3 = "";
+var _leagueMem4 = "";
 dbConnection().then(db => {
     return db.dropDatabase().then(() => {
-        return dbConnection;
-        
+        return dbConnection;  
     }).then((db) => {
+        return usersDAL.createLeague([],"The Cool League");        
+    }).then((leagueId) => {
+        _leagueId = leagueId;
+        return leagueId;     
+    }).then((leagueId) => {
         var pw1 = "pass";
         var hash1 = bcrypt.hashSync("pass");
         return usersDAL.createUser("Troy","Koss","troykoss@gmail.com","password");
+    
     }).then((userid) => {
-        //console.log("TROYS ID: ", userid);
-        //return wagersDAL.createWager(userid, new Date(), "over");
-        return true;
+        _leagueMem1 = userid;
+        return wagersDAL.createWager(userid, new Date(), "over");
     }).then((res) => {
         var pw2 = "password";
         var hash2 = bcrypt.hashSync(pw2);
         return usersDAL.createUser("Ryan","Anderson","ryananderson@gmail.com","password");
     }).then((userid) => {
+        _leagueMem2 = userid;
         return wagersDAL.createWager(userid, new Date(), "under");
 
     }).then((res) => {
@@ -37,6 +47,7 @@ dbConnection().then(db => {
         var hash4 = bcrypt.hashSync(pw4);
         return usersDAL.createUser("Mike","Smith","mikesmith@gmail.com","password");
     }).then((userid) => {
+        _leagueMem3 = userid;
         return wagersDAL.createWager(userid, new Date(), "under");
 
     }).then((res) => {
@@ -44,6 +55,7 @@ dbConnection().then(db => {
         var hash5 = bcrypt.hashSync(pw5);
         return usersDAL.createUser("Steve","Leader","steveleader@gmail.com","password");
     }).then((userid) => {
+        _leagueMem4 = userid;
         return wagersDAL.createWager(userid,new Date(), "over");
 
     }).then((res) => {
@@ -79,8 +91,40 @@ dbConnection().then(db => {
         var date4 = new Date();
         return salamiDAL.createSalami(77,40,"under","open",date4);
         
-    }).then(() => {
-        //console.log("Done seeding database");
+    }).then((res) => {
+        return usersDAL.joinLeague(_leagueMem1,_leagueId);
+    }).then((res) => {
+        return usersDAL.joinLeague(_leagueMem2,_leagueId);
+    }).then((res) => {
+        var rec = {
+            win: 10,
+            loss: 3,
+            draw: 0
+        }
+        return usersDAL.updateRecord(_leagueMem1,rec);
+    }).then((res) => {
+         rec = {
+            win: 4,
+            loss: 9,
+            draw: 0
+        }
+        return usersDAL.updateRecord(_leagueMem2,rec);
+    }).then((res) => {
+        rec = {
+            win: 8,
+            loss: 2,
+            draw: 1
+        }
+        return usersDAL.updateRecord(_leagueMem3,rec);
+    }).then((res) => {
+        rec = {
+            win: 9,
+            loss: 3,
+            draw: 1
+        }
+        return usersDAL.updateRecord(_leagueMem4,rec);
+    }).then((league) => {
+        console.log("Done seeding database");
         db.close();
     });
 }, (error) => {

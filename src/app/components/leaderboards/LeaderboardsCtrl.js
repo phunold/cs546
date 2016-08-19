@@ -14,7 +14,7 @@
         initController();
 
         function initController() {
-            //getLeaderboardUsers();
+            getLeaderboardUsers();
         }
 
         function getLeaderboardUsers(){
